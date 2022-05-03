@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body>
+  <h1>Welcome to the home page of django web application!</h1>
+  <p>Testing the forms for taking in queries by the employess of Reshamandi company.</p>
+    
+<div ng-app="myApp" ng-controller="formCtrl">
+  <form novalidate action="" method="POST"> 
+    {% csrf_token %}
+   <h2>PRODUCT SPECIFICATIONS</h2>  <br>
+    Type:
+    <select ng-model="product.type" name="type">
+      <option value="">
+      <option value="Accessories">Accessories
+      <option value="Art Silk">Art Silk
+      <option value="Bagru">Bagru
+      <option value="Banarasi">Banarasi
+      <option value="Bhagalpuri">Bhagalpuri
+      <option value="Chanderi Cotton">Chanderi Cotton
+      <option value="Cotton-Linen">Cotton-Linen
+      <option value="Cotton-Tant">Cotton-Tant
+      <option value="Cotton-Voile">Cotton-Voile
+      </select> <br> <br> 
+    Category:
+      <select ng-model="product.category" name="category">
+        <option value="">
+        <option value="AC Blanket(DOHAR)">AC Blanket(DOHAR)
+        <option value="Beads">Beads
+        <option value="Bedsheet">Bedsheet
+        <option value="Bermuda">Bermuda
+        <option value="Shorts">Shorts
+        <option value="Bluse">Bluse
+        <option value="Chiffon">Chiffon
+        <option value="Crochet Lace">Crochet Lace
+        <option value="Fabric">Fabric
+        <option value="Fusing">Fusing
+          <option value="Cutting Roll">Cutting Roll
+            <option value="Girls-Womens Suit">Girls-Womens Suit
+        </select> <br> <br> 
+    Color:
+    <select ng-model="product.color" name="color">
+      <option value="">
+      <option value="Blue">Blue
+      <option value="Violet">Violet
+      <option value="Green">Green
+        <option value="Orange">Orange
+          <option value="Red">Red
+        <option value="Indigo">Indigo
+      <option value="Yellow">Yellow
+      </select> <br> <br>
+    Border:
+    <select ng-model="product.border" name="border">
+      <option value="">
+      <option value="Floral">Floral
+      <option value="Checks">Checks
+      <option value="Lines">Lines
+      <option value="Golden Zari">Golden Zari
+      </select> <br> <br> 
+      <input type="submit" value="Search">
+    <h2>TRANSACTION DETAILS</h2> <br>
+    Month of transaction:
+    <select ng-model="user.month">
+      <option value="">
+      <option value="January">January
+      <option value="February">February
+      <option value="March">March
+      <option value="April">April
+      <option value="May">May
+      <option value="June">June
+      <option value="July">July
+      <option value="August">August
+      <option value="September">September
+      <option value="October">October
+      <option value="November">November
+      <option value="December">December
+      </select> <br> <br> 
+   
+    Rating:
+    <select ng-model="user.rating">
+      <option value="">
+      <option value="1">1
+      <option value="2">2
+      <option value="3">3
+      <option value="4">4
+      <option value="5">5
+      </select> <br> <br> 
+      Center: 
+    <select ng-model="user.center">
+      <option value="">
+      <option value="Bangalore">Bangalore
+      <option value="Chennai">Chennai
+      <option value="Hyderabad">Hyderabad
+      <option value="Mumbai">Mumbai
+      <option value="Delhi">Delhi
+      </select> <br> <br> 
+      Weaver ID:
+      <input type="text" ng-model="user.weaver_id"><br><br>
+    <button ng-click="reset()">RESET</button><br>
+ 
+  </form>
+  
+  {% if stock %}
+  Current stock is : {{ stock }}
+  {% endif %}
+
+  {% if table %}
+    Table is : {{ table }}
+  {% endif %}
+
+  <p>Product = {{product}}</p>
+  <p>Transaction = {{user}}</p>
+  <p>Product prototype = {{Pmaster}}</p>
+  <p>Transaction Prototype = {{Tmaster}}</p>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('formCtrl', function($scope) {
+    $scope.Pmaster = {type: "",category:"",color:"",border:""};
+    $scope.Tmaster = {month: "",rating:"",weaver_id:"",center:""};
+    $scope.reset = function() {
+        $scope.user = angular.copy($scope.Tmaster);
+        $scope.product = angular.copy($scope.Pmaster);
+    };
+    $scope.reset();
+  
+
+});
+</script>
+
+</body>
+</html>
