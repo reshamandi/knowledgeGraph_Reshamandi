@@ -9,9 +9,15 @@
   <form novalidate action="" method="POST"> 
     {% csrf_token %}
    <h2>PRODUCT SPECIFICATIONS</h2>  <br>
+
     Type:
-    <select ng-model="product.type" name="type">
-      <option value="">
+    <select ng-model="product.type" name="type" multiple>
+      <option value="">All</option>
+      {% for i in formData.types %}
+      <option value="{{ i }}">{{ i }}</option>
+      {% endfor %}
+
+      <!-- <option value="">All
       <option value="Accessories">Accessories
       <option value="Art Silk">Art Silk
       <option value="Bagru">Bagru
@@ -20,11 +26,11 @@
       <option value="Chanderi Cotton">Chanderi Cotton
       <option value="Cotton-Linen">Cotton-Linen
       <option value="Cotton-Tant">Cotton-Tant
-      <option value="Cotton-Voile">Cotton-Voile
-      </select> <br> <br> 
+      <option value="Cotton-Voile">Cotton-Voile -->
+    </select> <br> <br> 
     Category:
       <select ng-model="product.category" name="category">
-        <option value="">
+        <option value="">All
         <option value="AC Blanket(DOHAR)">AC Blanket(DOHAR)
         <option value="Beads">Beads
         <option value="Bedsheet">Bedsheet
@@ -40,7 +46,7 @@
         </select> <br> <br> 
     Color:
     <select ng-model="product.color" name="color">
-      <option value="">
+      <option value="">All
       <option value="Blue">Blue
       <option value="Violet">Violet
       <option value="Green">Green
@@ -51,17 +57,17 @@
       </select> <br> <br>
     Border:
     <select ng-model="product.border" name="border">
-      <option value="">
+      <option value="">All
       <option value="Floral">Floral
       <option value="Checks">Checks
       <option value="Lines">Lines
-      <option value="Golden Zari">Golden Zari
+      <option value="Golden-Zari">Golden Zari
       </select> <br> <br> 
       <input type="submit" value="Search">
     <h2>TRANSACTION DETAILS</h2> <br>
     Month of transaction:
     <select ng-model="user.month">
-      <option value="">
+      <option value="">All
       <option value="January">January
       <option value="February">February
       <option value="March">March
@@ -76,6 +82,14 @@
       <option value="December">December
       </select> <br> <br> 
    
+      Center: 
+      <select ng-model="user.center">
+        <option value="">
+        <option value="Bangalore">Bangalore
+        <option value="Hyderabad">Hyderabad
+        <option value="Mumbai">Mumbai
+        </select> <br> <br> 
+        
     Rating:
     <select ng-model="user.rating">
       <option value="">
@@ -85,15 +99,7 @@
       <option value="4">4
       <option value="5">5
       </select> <br> <br> 
-      Center: 
-    <select ng-model="user.center">
-      <option value="">
-      <option value="Bangalore">Bangalore
-      <option value="Chennai">Chennai
-      <option value="Hyderabad">Hyderabad
-      <option value="Mumbai">Mumbai
-      <option value="Delhi">Delhi
-      </select> <br> <br> 
+
       Weaver ID:
       <input type="text" ng-model="user.weaver_id"><br><br>
     <button ng-click="reset()">RESET</button><br>
@@ -124,8 +130,6 @@ app.controller('formCtrl', function($scope) {
         $scope.product = angular.copy($scope.Pmaster);
     };
     $scope.reset();
-  
-
 });
 </script>
 
