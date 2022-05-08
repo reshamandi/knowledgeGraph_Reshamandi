@@ -11,113 +11,101 @@
    <h2>PRODUCT SPECIFICATIONS</h2>  <br>
 
     Type:
-    <select ng-model="product.type" name="type" multiple>
+    <select ng-model="product.type" name="type" multiple size="3">
       <option value="">All</option>
       {% for i in formData.types %}
       <option value="{{ i }}">{{ i }}</option>
       {% endfor %}
-
-      <!-- <option value="">All
-      <option value="Accessories">Accessories
-      <option value="Art Silk">Art Silk
-      <option value="Bagru">Bagru
-      <option value="Banarasi">Banarasi
-      <option value="Bhagalpuri">Bhagalpuri
-      <option value="Chanderi Cotton">Chanderi Cotton
-      <option value="Cotton-Linen">Cotton-Linen
-      <option value="Cotton-Tant">Cotton-Tant
-      <option value="Cotton-Voile">Cotton-Voile -->
     </select> <br> <br> 
+
     Category:
-      <select ng-model="product.category" name="category">
+      <select ng-model="product.category" name="category" multiple size="3">
         <option value="">All
-        <option value="AC Blanket(DOHAR)">AC Blanket(DOHAR)
-        <option value="Beads">Beads
-        <option value="Bedsheet">Bedsheet
-        <option value="Bermuda">Bermuda
-        <option value="Shorts">Shorts
-        <option value="Bluse">Bluse
-        <option value="Chiffon">Chiffon
-        <option value="Crochet Lace">Crochet Lace
-        <option value="Fabric">Fabric
-        <option value="Fusing">Fusing
-          <option value="Cutting Roll">Cutting Roll
-            <option value="Girls-Womens Suit">Girls-Womens Suit
-        </select> <br> <br> 
-    Color:
-    <select ng-model="product.color" name="color">
-      <option value="">All
-      <option value="Blue">Blue
-      <option value="Violet">Violet
-      <option value="Green">Green
-        <option value="Orange">Orange
-          <option value="Red">Red
-        <option value="Indigo">Indigo
-      <option value="Yellow">Yellow
-      </select> <br> <br>
-    Border:
-    <select ng-model="product.border" name="border">
-      <option value="">All
-      <option value="Floral">Floral
-      <option value="Checks">Checks
-      <option value="Lines">Lines
-      <option value="Golden-Zari">Golden Zari
+        {% for i in formData.categories %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
       </select> <br> <br> 
+
+    Color:
+    <select ng-model="product.color" name="color" multiple size="3">
+      <option value="">All
+        {% for i in formData.colors %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select> <br> <br>
+
+    Border:
+    <select ng-model="product.border" name="border" multiple size="3">
+      <option value="">All
+        {% for i in formData.borders %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select> <br> <br> 
+      <input type="hidden" name="switch" value="product">
       <input type="submit" value="Search">
+      </form>
+
+      <form novalidate action="" method="POST"> 
+        {% csrf_token %}
     <h2>TRANSACTION DETAILS</h2> <br>
     Month of transaction:
-    <select ng-model="user.month">
+    <select ng-model="user.month" name="month" multiple size="3">
       <option value="">All
-      <option value="January">January
-      <option value="February">February
-      <option value="March">March
-      <option value="April">April
-      <option value="May">May
-      <option value="June">June
-      <option value="July">July
-      <option value="August">August
-      <option value="September">September
-      <option value="October">October
-      <option value="November">November
-      <option value="December">December
+        {% for i in formData.months %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
       </select> <br> <br> 
    
-      Center: 
-      <select ng-model="user.center">
-        <option value="">
-        <option value="Bangalore">Bangalore
-        <option value="Hyderabad">Hyderabad
-        <option value="Mumbai">Mumbai
+      Centre: 
+      <select ng-model="user.center" name="centre" multiple size="3">
+        <option value="">All
+          {% for i in formData.centres %}
+          <option value="{{ i }}">{{ i }}</option>
+          {% endfor %}
         </select> <br> <br> 
-        
+
     Rating:
-    <select ng-model="user.rating">
-      <option value="">
-      <option value="1">1
-      <option value="2">2
-      <option value="3">3
-      <option value="4">4
-      <option value="5">5
+    <select ng-model="user.rating" name="rating" multiple size="3">
+      <option value="">All
+        {% for i in formData.ratings %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
       </select> <br> <br> 
 
       Weaver ID:
-      <input type="text" ng-model="user.weaver_id"><br><br>
+      <input type="text" ng-model="user.weaver_id" name="wids">
+      <br><br>
+    <input type="hidden" name="switch" value="transaction">
+    <input type="submit" value="Search">
     <button ng-click="reset()">RESET</button><br>
- 
   </form>
-  
-  {% if stock %}
-  Current stock is : {{ stock }}
+
+  <br>
+  {% if count %}
+  Number of transactions is : {{ count }}
   {% endif %}
+  <br>
 
   {% if table %}
-    Table is : {{ table }}
+    Table is : <br>
+    <table>
+      <tr>
+        <th>Weaver_id</th>
+        <th>Quantity</th>
+        <th>Month</th>
+        <th>Centre</th>
+        <th>Rating</th>
+      </tr>
+      {% for tran in table %}
+      <tr>
+        {% for key,value in tran.items %}
+        <td>{{ value }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </table>
+    
   {% endif %}
-
-  <p>Product = {{product}}</p>
-  <p>Transaction = {{user}}</p>
-  <p>Product prototype = {{Pmaster}}</p>
-  <p>Transaction Prototype = {{Tmaster}}</p>
 </div>
 
 <script>
