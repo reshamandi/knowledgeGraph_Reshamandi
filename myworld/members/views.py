@@ -12,14 +12,18 @@ def load():
     g = pickle.load(open(path,'rb'))
 
 def transactions(months, centres, ratings, wids):
+    g = nx.MultiGraph()
+    path = os.path.dirname(os.path.realpath(__file__)) + "/Graph1.txt"
+    g = pickle.load(open(path,'rb'))
     data = [0, []]
     if wids:
         print("Yess")
         for wid in wids:
             for pdt in g[wid].keys():
                 for index in g[wid][pdt].keys():
-                    transaction = g[wid][pdt][index]
+                    transaction = g[wid][pdt][index].copy()
                     if transaction['month'] in months and transaction['centre'] in centres and transaction['rating'] in ratings:
+                        transaction['pdt'] = pdt
                         data[1].append(transaction)
                         data[0] += 1
 
@@ -29,8 +33,9 @@ def transactions(months, centres, ratings, wids):
             print(mon)
             for pdt in g[mon].keys():
                 for index in g[mon][pdt].keys():
-                    transaction = g[mon][pdt][index]
+                    transaction = g[mon][pdt][index].copy()
                     if transaction['centre'] in centres and transaction['rating'] in ratings:
+                        transaction['pdt'] = pdt
                         data[1].append(transaction)
                         data[0] += 1
     return data
@@ -72,13 +77,27 @@ def index(request):
             print("pdt")
     
         else: 
-            print("Trans")
             months = request.POST.getlist('month')
+            # Checking if all months was selected
+            if not months[0]:        
+                months = formData['months']
+
             centres = request.POST.getlist('centre')
+            if not centres[0]:
+                centres = formData['centres']
+
             ratings = request.POST.getlist('rating')
-            data = transactions(months, centres, ratings, [])
+            if not ratings[0]:
+                ratings = formData['ratings']
+
+            wids = request.POST.get('wids')
+            if wids:
+                wids = wids.split(',')
+            else:
+                wids = []
+            # print(months, centres, ratings, wids)
+            data = transactions(months, centres, ratings, wids)
             return render(request, 'first.html', {'count': data[0], 'table': data[1] , 'formData': formData}) 
-            print(months, centres, ratings)
 
     #   types = request.POST.getlist('type')
     #   category = request.POST.getlist('category')
@@ -95,5 +114,4 @@ def index(request):
 
 
   else:
-        load()
         return render(request, 'first.html', {'stock': 0, 'table': "" , 'formData': formData}) 
