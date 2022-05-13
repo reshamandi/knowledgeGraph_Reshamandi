@@ -1,3 +1,4 @@
+from nis import match
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
@@ -97,7 +98,42 @@ def index(request):
                 wids = []
             # print(months, centres, ratings, wids)
             data = transactions(months, centres, ratings, wids)
-            return render(request, 'first.html', {'count': data[0], 'table': data[1] , 'formData': formData}) 
+            chartMonth = []
+            
+            if wids:
+                for wid in wids:
+                    chart = [0,0,0,0,0,0,0,0,0,0,0,0]
+                    for tran in data[1]:
+                        if(tran['w_id'] == wid):
+                            m = tran['month']
+                            if m == "January":
+                                chart[0] += int(tran['quantity'])
+                            elif m == "February":
+                                chart[1] += int(tran['quantity'])
+                            elif m == "March":
+                                chart[2] += int(tran['quantity'])
+                            elif m == "April":
+                                chart[3] += int(tran['quantity'])
+                            elif m == "May":
+                                chart[4] += int(tran['quantity'])
+                            elif m == "June":
+                                chart[5] += int(tran['quantity'])
+                            elif m == "July":
+                                chart[6] += int(tran['quantity'])
+                            elif m == "August":
+                                chart[7] += int(tran['quantity'])
+                            elif m == "September":
+                                chart[8] += int(tran['quantity'])
+                            elif m == "October":
+                                chart[9] += int(tran['quantity'])
+                            elif m == "November":
+                                chart[10] += int(tran['quantity'])
+                            elif m == "December":
+                                chart[11] += int(tran['quantity'])
+                    chartMonth.append(chart);                
+            print(type(chart[0]))
+            wids = [2323133,34353534]
+            return render(request, 'first.html', {'count': data[0], 'table': data[1] , 'formData': formData, 'chartMonth': chartMonth[0], 'wids': wids[0]}) 
 
     #   types = request.POST.getlist('type')
     #   category = request.POST.getlist('category')
@@ -114,4 +150,4 @@ def index(request):
 
 
   else:
-        return render(request, 'first.html', {'stock': 0, 'table': "" , 'formData': formData}) 
+        return render(request, 'first.html', {'count': 0, 'table': "" , 'formData': formData}) 

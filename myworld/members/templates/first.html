@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" integrity="sha512-Lii3WMtgA0C0qmmkdCpsG0Gjr6M0ajRyQRQSbTF6BsrVh/nhZdHpVZ76iMIPvQwz1eoXC3DmAg9K51qT5/dEVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <body>
   <h1>Welcome to the home page of django web application!</h1>
@@ -86,6 +87,9 @@
   {% endif %}
   <br>
 
+  {{ chart }}
+  <centre><canvas id="myChart" width="50" height="10" ></canvas></centre> 
+
   {% if table %}
     Table is : <br>
     <table>
@@ -119,6 +123,81 @@ app.controller('formCtrl', function($scope) {
         $scope.product = angular.copy($scope.Pmaster);
     };
     $scope.reset();
+});
+var quantity = "{{chartMonth}}";
+if(quantity)var Quantity = JSON.parse(quantity);
+// if(wids) var Wids = JSON.parse(wids);
+// console.log(typeof(quantity[0][0]));
+// console.log(typeof(wids));
+// if(wids) var Wids = JSON.parse(wids);
+const plugin = {
+  id: 'custom_canvas_background_color',
+  beforeDraw: (chart) => {
+    const ctx = chart.canvas.getContext('2d');
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = 'lightYellow';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+
+var DATA = []
+if(quantity){
+for(let i = 0; i<1;i++){
+  // var Quantity = quantity[i];
+  var obj = {
+    label: "dfdf",
+          data: Quantity,
+          backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)'
+          ],
+          borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+          ],
+          hoverOffset: 5,
+          borderWidth: 1,
+          tension: 0.4,
+  }
+  DATA.push(obj);
+}
+}
+
+let Labels = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: Labels,
+        datasets: DATA,
+    },
+    plugins: [plugin],
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Quantity vs Month'
+            },
+
+        },
+        scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+    
+    }
 });
 </script>
 
