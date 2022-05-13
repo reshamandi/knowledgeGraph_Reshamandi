@@ -99,9 +99,10 @@ def index(request):
             # print(months, centres, ratings, wids)
             data = transactions(months, centres, ratings, wids)
             chartMonth = []
-            
+            Wids = []
             if wids:
                 for wid in wids:
+                    Wids.append(int(wid))
                     chart = [0,0,0,0,0,0,0,0,0,0,0,0]
                     for tran in data[1]:
                         if(tran['w_id'] == wid):
@@ -131,9 +132,7 @@ def index(request):
                             elif m == "December":
                                 chart[11] += int(tran['quantity'])
                     chartMonth.append(chart);                
-            print(type(chart[0]))
-            wids = [2323133,34353534]
-            return render(request, 'first.html', {'count': data[0], 'table': data[1] , 'formData': formData, 'chartMonth': chartMonth[0], 'wids': wids[0]}) 
+            return render(request, 'first.html', {'count': data[0], 'table': data[1] , 'formData': formData, 'chartMonth': chartMonth, 'wids': Wids}) 
 
     #   types = request.POST.getlist('type')
     #   category = request.POST.getlist('category')
@@ -151,3 +150,6 @@ def index(request):
 
   else:
         return render(request, 'first.html', {'count': 0, 'table': "" , 'formData': formData}) 
+
+
+

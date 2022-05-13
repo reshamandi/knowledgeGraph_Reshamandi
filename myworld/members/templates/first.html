@@ -125,30 +125,32 @@ app.controller('formCtrl', function($scope) {
     $scope.reset();
 });
 var quantity = "{{chartMonth}}";
+var wids = "{{wids}}";
+if(wids)var Wids = JSON.parse(wids);
 if(quantity)var Quantity = JSON.parse(quantity);
-// if(wids) var Wids = JSON.parse(wids);
-// console.log(typeof(quantity[0][0]));
-// console.log(typeof(wids));
-// if(wids) var Wids = JSON.parse(wids);
+
 const plugin = {
   id: 'custom_canvas_background_color',
   beforeDraw: (chart) => {
     const ctx = chart.canvas.getContext('2d');
     ctx.save();
     ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = 'lightYellow';
+    ctx.fillStyle = 'lightBlack';
     ctx.fillRect(0, 0, chart.width, chart.height);
     ctx.restore();
   }
 };
-
+console.log(Wids);
+console.log(typeof(Wids));
+console.log(Quantity);
+console.log(typeof(Quantity));
 var DATA = []
 if(quantity){
-for(let i = 0; i<1;i++){
+for(let i = 0; i<Wids.length;i++){
   // var Quantity = quantity[i];
   var obj = {
-    label: "dfdf",
-          data: Quantity,
+    label: Wids[i],
+          data: Quantity[i],
           backgroundColor: [
               'rgba(255, 99, 132, 0.5)',
               'rgba(54, 162, 235, 0.5)',
