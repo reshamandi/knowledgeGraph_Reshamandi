@@ -91,10 +91,10 @@
   {% if wids %}
   <centre><canvas id="myChart" width="50" height="10" ></canvas></centre> 
   {% endif %}
-  
+
   {% if table %}
     <h2>Table is :</h2> <br>
-    <table>
+    <table class="transactions">
       <thead>
         <tr>
           <th>Weaver_id</th>
@@ -115,11 +115,50 @@
         {% endfor %}
       </tbody>
     </table>
-    
   {% endif %}
+
+  {% if top.wids %}
+    <div >
+      <table>
+        <thead>
+          <tr>
+            <th>Weaver_id</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for wid,qt in top.wids %}
+          <tr>
+            <td>{{ wid }}</td>
+            <td>{{ qt }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pdt,qt in top.pdts %}
+          <tr>
+            <td>{{ pdt }}</td>
+            <td>{{ qt }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+  <input type="hidden" id="myVar" name="variable" value="{{ topWid }}">
+  <input type="hidden" id="myVar2" name="variable" value="{{ topPdt }}">
 </div>
 
-<script>
+<script type="text/javascript">
 var app = angular.module('myApp', []);
 app.controller('formCtrl', function($scope) {
     $scope.Pmaster = {type: "",category:"",color:"",border:""};
@@ -132,8 +171,17 @@ app.controller('formCtrl', function($scope) {
 });
 var quantity = "{{chartMonth}}";
 var wids = "{{wids}}";
+var topWid = document.getElementById("myVar").value;
+var qtWid = "{{qtWid}}";
+var topPdt = document.getElementById("myVar2").value;
+var qtPdt = "{{qtPdt}}";
 if(wids)var Wids = JSON.parse(wids);
 if(quantity)var Quantity = JSON.parse(quantity);
+if(topWid)console.log(topWid);
+if(qtWid)console.log(JSON.parse(qtWid));
+if(topPdt)console.log(topPdt);
+if(qtPdt)console.log(JSON.parse(qtPdt));
+
 
 const plugin = {
   id: 'custom_canvas_background_color',
@@ -151,7 +199,8 @@ console.log(typeof(Wids));
 console.log(Quantity);
 console.log(typeof(Quantity));
 var DATA = []
-if(quantity){
+if(Wids.length){
+  console.log("Chexck");
 for(let i = 0; i<Wids.length;i++){
   // var Quantity = quantity[i];
   var obj = {
@@ -179,7 +228,7 @@ for(let i = 0; i<Wids.length;i++){
   }
   DATA.push(obj);
 }
-}
+
 
 let Labels = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -207,6 +256,7 @@ const myChart = new Chart(ctx, {
     
     }
 });
+}
 </script>
 
 </body>

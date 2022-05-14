@@ -102,6 +102,9 @@ def index(request):
             data = transactions(months, centres, ratings, wids)
             chartMonth = []
             Wids = []
+            top={}
+            top_wid = {}
+            top_pdt = {}
             if wids:
                 for wid in wids:
                     Wids.append(int(wid))
@@ -134,7 +137,38 @@ def index(request):
                             elif m == "December":
                                 chart[11] += int(tran['quantity'])
                     chartMonth.append(chart);                
-            return render(request, 'first.html', {'count': data[0], 'table': data[1] , 'formData': formData, 'chartMonth': chartMonth, 'wids': Wids}) 
+            else:
+                for tran in data[1]:
+                    try:
+                        top_wid[tran['w_id']] += int(tran['quantity'])
+                    except:
+                        top_wid[tran['w_id']] = int(tran['quantity'])
+                    try:
+                        top_pdt[tran['pdt']] += int(tran['quantity'])
+                    except:
+                        top_pdt[tran['pdt']] = int(tran['quantity'])
+
+                top_wid = {k: v for k, v in sorted(top_wid.items(), key=lambda item: item[1], reverse=True)}
+                top_pdt = {k: v for k, v in sorted(top_pdt.items(), key=lambda item: item[1], reverse=True)}
+                l1 =  (list(top_wid.keys()))[:10]
+                l2 =  (list(top_wid.values()))[:10]
+                l3 =  (list(top_pdt.keys()))[:10]
+                l4 =  (list(top_pdt.values()))[:10]
+                top['wids'] =  zip(l1, l2) 
+                top['pdts'] =  zip(l3, l4)
+
+            return render(request, 'first.html', {
+                'count': data[0], 
+                'table': data[1] , 
+                'formData': formData, 
+                'chartMonth': chartMonth, 
+                'wids': Wids, 
+                'top': top,
+                'topWid': l1,
+                'qtWid': l2,
+                'topPdt': l3,
+                'qtPdt': l4,
+                }) 
 
     #   types = request.POST.getlist('type')
     #   category = request.POST.getlist('category')

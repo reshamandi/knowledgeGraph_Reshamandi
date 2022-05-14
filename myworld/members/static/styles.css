@@ -1,10 +1,11 @@
-table{
+.transactions{
     margin: 50px 17% 20px;
     text-align: center;
     overflow-y: scroll;
     height: 400px;
     display: block;
 }
+
 
 th, td{
     border: transparent;
