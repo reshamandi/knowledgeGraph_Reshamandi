@@ -1,25 +1,56 @@
 .transactions{
+    background-color: transparent;
     margin: 50px 17% 20px;
     text-align: center;
     overflow-y: scroll;
-    height: 400px;
+    height: 457px;
+    box-shadow: 15px 8px 10px #eaeced;
     display: block;
 }
 
-
 th, td{
     border: transparent;
-    padding: 5px 20px;
+    padding: 15px 20px;
 }
 
-thead tr{
-    background-color: #7bc2ee !important;
+.transactions thead tr{
+    background-color: #91b0c3 !important;
 }
 
-tr:nth-child(even){
+.transactions tr:nth-child(even){
     background-color: #bfe4fa;
 }
 
-tr:nth-child(odd){
+.transactions tr:nth-child(odd){
     background-color: aliceblue;
+}
+
+.top{
+    background-color: #efefef;
+    margin: 50px;
+    box-shadow: 10px 5px 15px #989898;
+}
+
+.container{
+    display: inline-block;
+    padding: 40px 12% 60px
+}
+
+thead{
+    background-color: #abaaaa;
+}
+
+tr:nth-child(even){
+    background-color: #c3c3c3;
+}
+
+.top h2{
+    text-align: center;
+    color: #727272;
+    padding-top: 50px;
+}
+
+h2{
+    text-align: center;
+    color: #71a1b8;
 }

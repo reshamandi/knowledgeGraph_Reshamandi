@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" integrity="sha512-Lii3WMtgA0C0qmmkdCpsG0Gjr6M0ajRyQRQSbTF6BsrVh/nhZdHpVZ76iMIPvQwz1eoXC3DmAg9K51qT5/dEVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<link rel="stylesheet" href="../static/styles.css">
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" integrity="sha512-Lii3WMtgA0C0qmmkdCpsG0Gjr6M0ajRyQRQSbTF6BsrVh/nhZdHpVZ76iMIPvQwz1eoXC3DmAg9K51qT5/dEVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="../static/styles.css">
+  </head>
 <body>
   <h1>Welcome to the home page of django web application!</h1>
   <p>Testing the forms for taking in queries by the employess of Reshamandi company.</p>
@@ -10,7 +12,7 @@
 <div ng-app="myApp" ng-controller="formCtrl">
   <form novalidate action="" method="POST"> 
     {% csrf_token %}
-   <h2>PRODUCT SPECIFICATIONS</h2>  <br>
+   <h1>PRODUCT SPECIFICATIONS</h1>  <br>
 
     Type:
     <select ng-model="product.type" name="type" multiple size="3">
@@ -49,7 +51,7 @@
 
       <form novalidate action="" method="POST"> 
         {% csrf_token %}
-    <h2>TRANSACTION DETAILS</h2> <br>
+    <h1>TRANSACTION DETAILS</h1> <br>
     Month of transaction:
     <select ng-model="user.month" name="month" multiple size="3">
       <option value="">All
@@ -86,14 +88,13 @@
   {% if count %}
   Number of transactions is : {{ count }}
   {% endif %}
-  <br>
 
   {% if wids %}
   <centre><canvas id="myChart" width="50" height="10" ></canvas></centre> 
   {% endif %}
 
   {% if table %}
-    <h2>Table is :</h2> <br>
+    <h2>Transactions :</h2>
     <table class="transactions">
       <thead>
         <tr>
@@ -118,47 +119,52 @@
   {% endif %}
 
   {% if top.wids %}
-    <div >
-      <table>
-        <thead>
-          <tr>
-            <th>Weaver_id</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for wid,qt in top.wids %}
-          <tr>
-            <td>{{ wid }}</td>
-            <td>{{ qt }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Product</th>
-            <th>Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for pdt,qt in top.pdts %}
-          <tr>
-            <td>{{ pdt }}</td>
-            <td>{{ qt }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="top">
+      <h2>Top 10 Weavers and products</h2>
+      <div class="container">
+        <table>
+          <thead>
+            <tr>
+              <th>Weaver_id</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for wid,qt in top.wids %}
+            <tr>
+              <td>{{ wid }}</td>
+              <td>{{ qt }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="container">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pdt,qt in top.pdts %}
+            <tr>
+              <td>{{ pdt }}</td>
+              <td>{{ qt }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   {% endif %}
   <input type="hidden" id="myVar" name="variable" value="{{ topWid }}">
   <input type="hidden" id="myVar2" name="variable" value="{{ topPdt }}">
 </div>
 
-<script type="text/javascript">
+<script>
 var app = angular.module('myApp', []);
 app.controller('formCtrl', function($scope) {
     $scope.Pmaster = {type: "",category:"",color:"",border:""};
