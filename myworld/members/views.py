@@ -1,4 +1,3 @@
-from nis import match
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
@@ -171,19 +170,7 @@ def index(request):
                 'qtPdt': l4,
                 }) 
 
-    #   types = request.POST.getlist('type')
-    #   category = request.POST.getlist('category')
-    # #   print(type(request.POST.getlist('type')))
-    #   print(types)
-    #   print(category)
-    #   print(request.POST.get('wids'))
-    #     data = findStock(request.POST.get("type"),request.POST.get("category"),request.POST.get("border"),request.POST.get("color"))
         return redirect('/members')
-      
-    #     return render(request, 'first.html', {'stock': data[0], 'table': data[1] , 'formData': formData}) 
-
-    
-
 
   else:
         return render(request, 'first.html', {'count': 0, 'table': "" , 'formData': formData}) 
