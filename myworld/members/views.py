@@ -105,6 +105,7 @@ def index(request):
             top={}
             top_wid = {}
             top_pdt = {}
+            l1 = l2 = l3 = l4 = []
             if wids:
                 for wid in wids:
                     Wids.append(int(wid))
