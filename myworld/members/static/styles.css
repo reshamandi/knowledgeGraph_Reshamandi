@@ -1,0 +1,24 @@
+table{
+    margin: 50px 17% 20px;
+    text-align: center;
+    overflow-y: scroll;
+    height: 400px;
+    display: block;
+}
+
+th, td{
+    border: transparent;
+    padding: 5px 20px;
+}
+
+thead tr{
+    background-color: #7bc2ee !important;
+}
+
+tr:nth-child(even){
+    background-color: #bfe4fa;
+}
+
+tr:nth-child(odd){
+    background-color: aliceblue;
+}

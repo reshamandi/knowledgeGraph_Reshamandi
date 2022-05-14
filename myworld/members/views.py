@@ -79,16 +79,18 @@ def index(request):
     
         else: 
             months = request.POST.getlist('month')
+            print("Checkinggggggggg")
+            print(months)
             # Checking if all months was selected
-            if not months[0]:        
+            if not months or not months[0]:        
                 months = formData['months']
 
             centres = request.POST.getlist('centre')
-            if not centres[0]:
+            if not centres or not centres[0]:
                 centres = formData['centres']
 
             ratings = request.POST.getlist('rating')
-            if not ratings[0]:
+            if not ratings or not ratings[0]:
                 ratings = formData['ratings']
 
             wids = request.POST.get('wids')

@@ -2,6 +2,7 @@
 <html lang="en">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" integrity="sha512-Lii3WMtgA0C0qmmkdCpsG0Gjr6M0ajRyQRQSbTF6BsrVh/nhZdHpVZ76iMIPvQwz1eoXC3DmAg9K51qT5/dEVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="../static/styles.css">
 <body>
   <h1>Welcome to the home page of django web application!</h1>
   <p>Testing the forms for taking in queries by the employess of Reshamandi company.</p>
@@ -87,27 +88,32 @@
   {% endif %}
   <br>
 
-  {{ chart }}
+  {% if wids %}
   <centre><canvas id="myChart" width="50" height="10" ></canvas></centre> 
-
+  {% endif %}
+  
   {% if table %}
-    Table is : <br>
+    <h2>Table is :</h2> <br>
     <table>
-      <tr>
-        <th>Weaver_id</th>
-        <th>Quantity</th>
-        <th>Month</th>
-        <th>Centre</th>
-        <th>Rating</th>
-        <th>Product</th>
-      </tr>
-      {% for tran in table %}
-      <tr>
-        {% for key,value in tran.items %}
-        <td>{{ value }}</td>
+      <thead>
+        <tr>
+          <th>Weaver_id</th>
+          <th>Quantity</th>
+          <th>Month</th>
+          <th>Centre</th>
+          <th>Rating</th>
+          <th>Product</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tran in table %}
+        <tr>
+          {% for key,value in tran.items %}
+          <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
         {% endfor %}
-      </tr>
-      {% endfor %}
+      </tbody>
     </table>
     
   {% endif %}
