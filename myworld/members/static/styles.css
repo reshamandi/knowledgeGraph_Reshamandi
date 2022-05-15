@@ -1,3 +1,24 @@
+body{
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #D4ECDD;
+}
+
+.resh{
+    font-family: 'Merienda', cursive;
+    text-align: center;
+    background-color: #D4ECDD;
+    color: #152D35;
+    margin: 0 ;
+    font-size: 50px;
+    padding: 50px 0 10px;
+}
+
+.line{
+    border: 3px solid #152D35;
+    width: 20%;
+}
+
 .transactions{
     background-color: transparent;
     margin: 50px auto 20px;
@@ -6,7 +27,7 @@
     height: fit-content;
     width: fit-content;
     max-height: 457px;
-    box-shadow: 15px 8px 10px #eaeced;
+    box-shadow: 15px 8px 20px #989c93;
     display: block;
 }
 
@@ -35,7 +56,7 @@ th, td{
 
 .container{
     display: inline-block;
-    padding: 40px 11% 60px
+    padding: 40px 115px
 }
 
 thead{
@@ -57,103 +78,83 @@ h2{
     color: #71a1b8;
 }
 
-/* 
-var app = angular.module('myApp', []);
-app.controller('formCtrl', function($scope) {
-    $scope.Pmaster = {type: "",category:"",color:"",border:""};
-    $scope.Tmaster = {month: "",rating:"",weaver_id:"",center:""};
-    $scope.reset = function() {
-        $scope.user = angular.copy($scope.Tmaster);
-        $scope.product = angular.copy($scope.Pmaster);
-    };
-    $scope.reset();
-});
-var quantity = "{{chartMonth}}";
-var wids = "{{wids}}";
-var topWid = document.getElementById("myVar").value;
-var qtWid = "{{qtWid}}";
-var topPdt = document.getElementById("myVar2").value;
-var qtPdt = "{{qtPdt}}";
-if(wids)var Wids = JSON.parse(wids);
-if(quantity)var Quantity = JSON.parse(quantity);
-
-if(topWid)console.log(topWid);
-if(qtWid)console.log(JSON.parse(qtWid));
-if(topPdt)console.log(topPdt);
-if(qtPdt)console.log(JSON.parse(qtPdt));
-
-
-const plugin = {
-  id: 'custom_canvas_background_color',
-  beforeDraw: (chart) => {
-    const ctx = chart.canvas.getContext('2d');
-    ctx.save();
-    ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = 'lightBlack';
-    ctx.fillRect(0, 0, chart.width, chart.height);
-    ctx.restore();
-  }
-};
-console.log(Wids);
-console.log(typeof(Wids));
-console.log(Quantity);
-console.log(typeof(Quantity));
-var DATA = []
-if(Wids.length){
-  console.log("Chexck");
-for(let i = 0; i<Wids.length;i++){
-  // var Quantity = quantity[i];
-  var obj = {
-    label: Wids[i],
-          data: Quantity[i],
-          backgroundColor: [
-              'rgba(255, 99, 132, 0.5)',
-              'rgba(54, 162, 235, 0.5)',
-              'rgba(255, 206, 86, 0.5)',
-              'rgba(75, 192, 192, 0.5)',
-              'rgba(153, 102, 255, 0.5)',
-              'rgba(255, 159, 64, 0.5)'
-          ],
-          borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-          ],
-          hoverOffset: 5,
-          borderWidth: 1,
-          tension: 0.4,
-  }
-  DATA.push(obj);
+#productSpec, #transSpec{
+    margin: 50px auto;
+    padding: 5px 5px 30px;
+    width: 40%;
+    background-color: #c5ddcd;
+    text-align: center;
+    box-shadow: 5px 5px 20px black;
 }
 
+h4{
+    text-align: left;
+    padding-left: 60px;
+    margin-bottom: 5px;
+    color: #152D35;
+}
 
-let Labels = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+h1{
+    color: #345B63;
+}
 
-const ctx = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: Labels,
-        datasets: DATA,
-    },
-    plugins: [plugin],
-    options: {
-        plugins: {
-            title: {
-                display: true,
-                text: 'Quantity vs Month'
-            },
+p{
+    text-align: center;
+}
 
-        },
-        scales: {
-            y: {
-                beginAtZero: false
-            }
-        }
-    
-    }
-});
-} */
+.butn{
+    border: transparent;
+    padding: 15px 30px;
+    font-size: 30px;
+    background-color: #152D35;
+    color: #D4ECDD;
+    margin: 70px 0 0 340px;
+}
+
+.butn:hover{
+    cursor: pointer;
+    background-color: #345B63;
+    /* color: #152D35; */
+}
+
+canvas{
+    margin: 15px;
+    width: 98%;
+}
+
+.input {
+    width: 78%;
+    padding: 5px;
+    border-radius: 3px;
+    border: none;
+    vertical-align: middle;
+}
+.input:hover, select:hover{
+    cursor: pointer;
+    background-color: #ecf8e7;
+}
+
+select {
+    width: 80%;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: none;
+}
+
+.btn2{
+    margin-top: 30px;
+    display: inline-block;
+    width: 40%;
+    padding: 15px;
+    font-size: 15px;
+    background-color: black;
+    color: white;
+    border: none;
+}
+
+.btn2:hover{
+    background-color: white;
+    color: black;
+    cursor: pointer;
+}
+
