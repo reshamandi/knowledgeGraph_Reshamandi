@@ -85,15 +85,40 @@
   </form>
 
   <br>
-  {% if count %}
-  Number of transactions is : {{ count }}
-  {% endif %}
 
   {% if wids %}
   <centre><canvas id="myChart" width="50" height="10" ></canvas></centre> 
   {% endif %}
 
+  {% if products %}
+  {{ products }} distinct products match the required specification
+  <br>
+  Their total stock: {{tot}}
+  <h2>Products :</h2>
+    <table class="transactions">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tran in table1 %}
+        <tr>
+          {% for key,value in tran.items %}
+          <td>{{ key }}</td>
+          <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+
+
+
   {% if table %}
+  Number of transactions is : {{ count }}
     <h2>Transactions :</h2>
     <table class="transactions">
       <thead>
@@ -160,9 +185,16 @@
       </div>
     </div>
   {% endif %}
-  <input type="hidden" id="myVar" name="variable" value="{{ topWid }}">
+  <input type="hidden" id="myVar" name="variable" value="{{ pdts }}">
   <input type="hidden" id="myVar2" name="variable" value="{{ topPdt }}">
 </div>
+{% if topWid %}
+<centre><canvas id="myChart2" width="5" height="10" ></canvas></centre> 
+{% endif %}
+<br>
+{% if topWid %}
+<centre><canvas id="myChart3" width="50" height="20" ></canvas></centre> 
+{% endif %}
 
 <script>
 var app = angular.module('myApp', []);
@@ -177,19 +209,34 @@ app.controller('formCtrl', function($scope) {
 });
 var quantity = "{{chartMonth}}";
 var wids = "{{wids}}";
-var topWid = document.getElementById("myVar").value;
+var topWid = "{{topWid}}";
 var qtWid = "{{qtWid}}";
 var topPdt = document.getElementById("myVar2").value;
 var qtPdt = "{{qtPdt}}";
+var pdts = document.getElementById("myVar").value;
+var st = "{{st}}";
+
+console.log(pdts);
+if(st)St = JSON.parse(st);
+console.log(St)
 if(wids)var Wids = JSON.parse(wids);
 if(quantity)var Quantity = JSON.parse(quantity);
-
-if(topWid)console.log(topWid);
-if(qtWid)console.log(JSON.parse(qtWid));
-if(topPdt)console.log(topPdt);
-if(qtPdt)console.log(JSON.parse(qtPdt));
-
-
+TOPWid = JSON.parse(topWid)
+QTWid =  JSON.parse(qtWid)
+if(topWid) console.log("topWid "+TOPWid+typeof(TOPWid[0]));
+if(qtWid)console.log("qtWid "+QTWid+typeof(QTWid[0]));
+if(topPdt)  console.log("topPdt "+(topPdt[0])+typeof(topPdt[0]));
+if(qtPdt)console.log("qtPdt "+JSON.parse(qtPdt)+typeof(JSON.parse(qtPdt)));
+var obj=topPdt.split(",");
+var l=[]
+for(let i=0; i<obj.length; i++) {
+  l=obj[i].length
+  if(i==obj.length-1)
+  obj[i]=obj[i].substring(2,l-2);
+  else
+  obj[i]=obj[i].substring(2,l-1);
+} 
+console.log(obj)
 const plugin = {
   id: 'custom_canvas_background_color',
   beforeDraw: (chart) => {
@@ -201,11 +248,13 @@ const plugin = {
     ctx.restore();
   }
 };
+var DATA=[]
 console.log(Wids);
 console.log(typeof(Wids));
 console.log(Quantity);
 console.log(typeof(Quantity));
-var DATA = []
+var DATA2=[]
+var label2=[]
 if(Wids.length){
   console.log("Chexck");
 for(let i = 0; i<Wids.length;i++){
@@ -240,7 +289,7 @@ for(let i = 0; i<Wids.length;i++){
 let Labels = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 const ctx = document.getElementById('myChart').getContext('2d');
-const myChart = new Chart(ctx, {
+const myChart2 = new Chart(ctx, {
     type: 'line',
     data: {
         labels: Labels,
@@ -251,7 +300,7 @@ const myChart = new Chart(ctx, {
         plugins: {
             title: {
                 display: true,
-                text: 'Quantity vs Month'
+                text: 'Top 10 Weavers'
             },
 
         },
@@ -263,6 +312,87 @@ const myChart = new Chart(ctx, {
     
     }
 });
+} 
+if(TOPWid.length){
+      
+let canvaselement=document.getElementById("myChart2");
+
+var config ={
+    type: "doughnut",
+    data: {
+        labels : TOPWid,
+        datasets: [{ data:QTWid,
+        backgroundColor: [
+                '#003f5c',
+                '#2f4b7c',
+                '#665191',
+                '#a05195',
+                '#d45087',
+                '#f95d6a',
+                '#ff7c43',
+                '#ffa600',
+                'rgba(54, 162, 235, 0.9)',
+                'rgba(255, 206, 86, 0.9)',
+               
+            ],
+    }]
+    },
+    plugins: [plugin],
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Top 10 Products'
+            },
+
+        },
+       
+    }
+  };
+    
+  var myChart2=new Chart(canvaselement,config);
+
+  let canvaselement1=document.getElementById("myChart3");
+
+var config1 ={
+    type: "bar",
+    data: {
+        labels : obj,
+        datasets: [{ data:JSON.parse(qtPdt),
+        backgroundColor: [
+                '#003f5c',
+                '#2f4b7c',
+                '#665191',
+                '#a05195',
+                '#d45087',
+                '#f95d6a',
+                '#ff7c43',
+                '#ffa600',
+                'rgba(54, 162, 235, 0.9)',
+                'rgba(255, 206, 86, 0.9)',
+               
+            ],
+    }]
+    },
+    plugins: [plugin],
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Quantity vs Month'
+            },
+
+        },
+       
+    },
+    scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+  };
+    
+  var myChart3=new Chart(canvaselement1,config1);
 }
 </script>
 

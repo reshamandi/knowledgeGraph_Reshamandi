@@ -11,6 +11,27 @@ def load():
     path = os.path.dirname(os.path.realpath(__file__)) + "/Graph1.txt"
     g = pickle.load(open(path,'rb'))
 
+def products(types,categories,borders,colors):
+    g = nx.MultiGraph()
+    path = os.path.dirname(os.path.realpath(__file__)) + "/Graph1.txt"
+    g = pickle.load(open(path,'rb'))
+    data=[0,[],0]
+    for type in types:
+        for product in g[type].keys():
+            names=product.split('*')
+            for item4 in categories:
+                if names[1]==item4:
+                    for item5 in borders:
+                        if names[2]==item5:
+                            for item6 in colors:
+                                if names[3]==item6:
+                                    temp={product : g.nodes[product]['Stock']}
+                                    data[0]+=1
+                                    data[1].append(temp)
+                                    data[2]+= g.nodes[product]['Stock']
+
+    return data
+
 def transactions(months, centres, ratings, wids):
     g = nx.MultiGraph()
     path = os.path.dirname(os.path.realpath(__file__)) + "/Graph1.txt"
@@ -74,13 +95,41 @@ def index(request):
   if request.method == "POST":
 
         if request.POST.get('switch') == "product":
-            print("pdt")
+            types = request.POST.getlist('type');
+            if not types or not types[0]:
+                types = formData['types']
+            
+            categories = request.POST.getlist('category');
+            if not categories or not categories[0]:
+                categories = formData['categories']
+            
+            colors = request.POST.getlist('color');
+            if not colors or not colors[0]:
+                colors = formData['colors']
+            
+            borders = request.POST.getlist('border');
+            if not borders or not borders[0]:
+                borders = formData['borders']
+
+            data = products(types, categories, borders, colors)
+            pdts =[]
+            st = []
+            for d in data[1]:
+                pdts.append(list(d.keys())[0])
+                st.append(int(list(d.values())[0]))
+
+            return render(request, 'first.html', {
+                'products': data[0], 
+                'table1': data[1] , 
+                'tot': data[2],
+                'formData': formData,
+                'pdts': pdts,
+                'st': st 
+                }) 
+
     
         else: 
             months = request.POST.getlist('month')
-            print("Checkinggggggggg")
-            print(months)
-            # Checking if all months was selected
             if not months or not months[0]:        
                 months = formData['months']
 
@@ -140,9 +189,9 @@ def index(request):
             else:
                 for tran in data[1]:
                     try:
-                        top_wid[tran['w_id']] += int(tran['quantity'])
+                        top_wid[int(tran['w_id'])] += int(tran['quantity'])
                     except:
-                        top_wid[tran['w_id']] = int(tran['quantity'])
+                        top_wid[int(tran['w_id'])] = int(tran['quantity'])
                     try:
                         top_pdt[tran['pdt']] += int(tran['quantity'])
                     except:

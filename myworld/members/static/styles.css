@@ -1,9 +1,11 @@
 .transactions{
     background-color: transparent;
-    margin: 50px 17% 20px;
+    margin: 50px auto 20px;
     text-align: center;
     overflow-y: scroll;
-    height: 457px;
+    height: fit-content;
+    width: fit-content;
+    max-height: 457px;
     box-shadow: 15px 8px 10px #eaeced;
     display: block;
 }
@@ -33,7 +35,7 @@ th, td{
 
 .container{
     display: inline-block;
-    padding: 40px 12% 60px
+    padding: 40px 11% 60px
 }
 
 thead{
@@ -54,3 +56,104 @@ h2{
     text-align: center;
     color: #71a1b8;
 }
+
+/* 
+var app = angular.module('myApp', []);
+app.controller('formCtrl', function($scope) {
+    $scope.Pmaster = {type: "",category:"",color:"",border:""};
+    $scope.Tmaster = {month: "",rating:"",weaver_id:"",center:""};
+    $scope.reset = function() {
+        $scope.user = angular.copy($scope.Tmaster);
+        $scope.product = angular.copy($scope.Pmaster);
+    };
+    $scope.reset();
+});
+var quantity = "{{chartMonth}}";
+var wids = "{{wids}}";
+var topWid = document.getElementById("myVar").value;
+var qtWid = "{{qtWid}}";
+var topPdt = document.getElementById("myVar2").value;
+var qtPdt = "{{qtPdt}}";
+if(wids)var Wids = JSON.parse(wids);
+if(quantity)var Quantity = JSON.parse(quantity);
+
+if(topWid)console.log(topWid);
+if(qtWid)console.log(JSON.parse(qtWid));
+if(topPdt)console.log(topPdt);
+if(qtPdt)console.log(JSON.parse(qtPdt));
+
+
+const plugin = {
+  id: 'custom_canvas_background_color',
+  beforeDraw: (chart) => {
+    const ctx = chart.canvas.getContext('2d');
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = 'lightBlack';
+    ctx.fillRect(0, 0, chart.width, chart.height);
+    ctx.restore();
+  }
+};
+console.log(Wids);
+console.log(typeof(Wids));
+console.log(Quantity);
+console.log(typeof(Quantity));
+var DATA = []
+if(Wids.length){
+  console.log("Chexck");
+for(let i = 0; i<Wids.length;i++){
+  // var Quantity = quantity[i];
+  var obj = {
+    label: Wids[i],
+          data: Quantity[i],
+          backgroundColor: [
+              'rgba(255, 99, 132, 0.5)',
+              'rgba(54, 162, 235, 0.5)',
+              'rgba(255, 206, 86, 0.5)',
+              'rgba(75, 192, 192, 0.5)',
+              'rgba(153, 102, 255, 0.5)',
+              'rgba(255, 159, 64, 0.5)'
+          ],
+          borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+          ],
+          hoverOffset: 5,
+          borderWidth: 1,
+          tension: 0.4,
+  }
+  DATA.push(obj);
+}
+
+
+let Labels = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+const ctx = document.getElementById('myChart').getContext('2d');
+const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: Labels,
+        datasets: DATA,
+    },
+    plugins: [plugin],
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Quantity vs Month'
+            },
+
+        },
+        scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+    
+    }
+});
+} */
