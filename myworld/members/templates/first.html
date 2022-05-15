@@ -195,7 +195,9 @@
 {% if topWid %}
 <centre><canvas id="myChart3" width="50" height="20" ></canvas></centre> 
 {% endif %}
-
+{% if pdts %}
+<centre><canvas id="myChart4" width="50" height="20" ></canvas></centre> 
+{% endif %}
 <script>
 var app = angular.module('myApp', []);
 app.controller('formCtrl', function($scope) {
@@ -216,25 +218,38 @@ var qtPdt = "{{qtPdt}}";
 var pdts = document.getElementById("myVar").value;
 var st = "{{st}}";
 
-// console.log(pdts);
+
 if(st)St = JSON.parse(st);
-// console.log(St)
+if(pdts){
+var l=pdts.split(",");
+for(let i=0; i<l.length; i++) {
+  var x=l[i].length
+  if(i==l.length-1)
+  l[i]=l[i].substring(2,x-2);
+  else
+  l[i]=l[i].substring(2,x-1);
+}
+console.log(l+typeof(l));
+}
+var Wids=[]
+var TOPWid=[]
+console.log(St+typeof(St)+typeof(St[0]));
 if(wids)var Wids = JSON.parse(wids);
 if(quantity)var Quantity = JSON.parse(quantity);
-TOPWid = JSON.parse(topWid)
-QTWid =  JSON.parse(qtWid)
+if(topWid) TOPWid = JSON.parse(topWid)
+if(qtWid) QTWid =  JSON.parse(qtWid)
 if(topWid) console.log("topWid "+TOPWid+typeof(TOPWid[0]));
 if(qtWid)console.log("qtWid "+QTWid+typeof(QTWid[0]));
 if(topPdt)  console.log("topPdt "+(topPdt[0])+typeof(topPdt[0]));
 if(qtPdt)console.log("qtPdt "+JSON.parse(qtPdt)+typeof(JSON.parse(qtPdt)));
 var obj=topPdt.split(",");
-var l=[]
+var l1=[]
 for(let i=0; i<obj.length; i++) {
-  l=obj[i].length
+  l1=obj[i].length
   if(i==obj.length-1)
-  obj[i]=obj[i].substring(2,l-2);
+  obj[i]=obj[i].substring(2,l1-2);
   else
-  obj[i]=obj[i].substring(2,l-1);
+  obj[i]=obj[i].substring(2,l1-1);
 } 
 console.log(obj)
 const plugin = {
@@ -358,7 +373,8 @@ var config1 ={
     type: "bar",
     data: {
         labels : obj,
-        datasets: [{ data:JSON.parse(qtPdt),
+        datasets: [{ 
+          data:JSON.parse(qtPdt),
         backgroundColor: [
                 '#003f5c',
                 '#2f4b7c',
@@ -391,8 +407,54 @@ var config1 ={
             }
         }
   };
-    
   var myChart3=new Chart(canvaselement1,config1);
+  
+}
+if(pdts.length){
+ 
+
+  let canvaselement2=document.getElementById("myChart4");
+
+var config2 ={
+    type: "bar",
+    data: {
+        labels : l,
+        datasets: [{ 
+          data:St,
+        backgroundColor: [
+                '#003f5c',
+                '#2f4b7c',
+                '#665191',
+                '#a05195',
+                '#d45087',
+                '#f95d6a',
+                '#ff7c43',
+                '#ffa600',
+                'rgba(54, 162, 235, 0.9)',
+                'rgba(255, 206, 86, 0.9)',
+               
+            ],
+    }]
+    },
+    plugins: [plugin],
+    options: {
+        plugins: {
+            title: {
+                display: true,
+                text: 'Product Vs Stock'
+            },
+
+        },
+       
+    },
+    scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+  };
+    
+  var myChart4=new Chart(canvaselement2,config2);
 }
 </script>
 
