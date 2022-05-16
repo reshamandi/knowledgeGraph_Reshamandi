@@ -1,13 +1,13 @@
 body{
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    background-color: #D4ECDD;
+    background-color: #9cb6a6;
 }
 
 .resh{
     font-family: 'Merienda', cursive;
     text-align: center;
-    background-color: #D4ECDD;
+    background-color: #9cb6a6;
     color: #152D35;
     margin: 0 ;
     font-size: 50px;
@@ -27,7 +27,7 @@ body{
     height: fit-content;
     width: fit-content;
     max-height: 457px;
-    box-shadow: 15px 8px 20px #989c93;
+    box-shadow: 15px 8px 20px #505050;
     display: block;
 }
 
@@ -37,15 +37,15 @@ th, td{
 }
 
 .transactions thead tr{
-    background-color: #91b0c3 !important;
+    background-color: #a7bea4 !important;
 }
 
 .transactions tr:nth-child(even){
-    background-color: #bfe4fa;
+    background-color: #b0d1ba;
 }
 
 .transactions tr:nth-child(odd){
-    background-color: aliceblue;
+    background-color: #e1ffe2;
 }
 
 .top{
@@ -75,7 +75,7 @@ tr:nth-child(even){
 
 h2{
     text-align: center;
-    color: #71a1b8;
+    color: #34573c;
 }
 
 #productSpec, #transSpec{
