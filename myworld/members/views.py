@@ -1,9 +1,13 @@
+from tracemalloc import start
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render, redirect
 import os, pickle
 import csv
 import networkx as nx
+
+global loading
+loading = 0
 
 def load():
     global g
@@ -12,9 +16,7 @@ def load():
     g = pickle.load(open(path,'rb'))
 
 def products(types,categories,borders,colors):
-    g = nx.MultiGraph()
-    path = os.path.dirname(os.path.realpath(__file__)) + "/Graph1.txt"
-    g = pickle.load(open(path,'rb'))
+    global g
     data=[0,[],0]
     for type in types:
         for product in g[type].keys():
@@ -33,12 +35,9 @@ def products(types,categories,borders,colors):
     return data
 
 def transactions(months, centres, ratings, wids):
-    g = nx.MultiGraph()
-    path = os.path.dirname(os.path.realpath(__file__)) + "/Graph1.txt"
-    g = pickle.load(open(path,'rb'))
+    global g
     data = [0, []]
     if wids:
-        print("Yess")
         for wid in wids:
             for pdt in g[wid].keys():
                 for index in g[wid][pdt].keys():
@@ -49,7 +48,6 @@ def transactions(months, centres, ratings, wids):
                         data[0] += 1
 
     else:
-        print("NO")
         for mon in months:
             print(mon)
             for pdt in g[mon].keys():
@@ -61,27 +59,11 @@ def transactions(months, centres, ratings, wids):
                         data[0] += 1
     return data
 
-def findStock(ty="",cat="",bor="",col=""):
-    data = [0, []]
-    if ty=="" and cat=="" and bor=="" and col=="":
-        print("Atleast one attribute/filter must be specified")
-    else:        
-        if ty!="":
-            d = g[ty]
-        elif cat!="":
-            d = g[cat]
-        elif bor!="":
-            d = g[bor]
-        else:
-            d = g[col]
-
-        for i in d.keys():
-            if str(i).find(ty) != -1 and str(i).find(cat) != -1 and str(i).find(bor) != -1 and str(i).find(col) != -1:
-                data[0] += g.nodes[i]['Stock']
-                data[1].append(g[i])
-    return data
-
 def index(request):
+  global loading
+  if loading == 0:
+      load()
+      loading += 1
   formData = {
           'types': ["Accessories", "Art-silk", "Bagru", "Banarasi", "Bhagalpuri", "Chanderi-cotton", "Cotton-linen", "Cotton-tant", "Cotton-voile"],
           'categories': ["AC Blanket(DOHAR)", "Beads", "Bedsheet", "Bermuda", "Bluse", "Chiffon", "Crochet Lace","Cutting Roll", "Fabric", "Fusing", "Girls-Womens Suit", "Shorts"],
@@ -93,7 +75,6 @@ def index(request):
       }
 
   if request.method == "POST":
-
         if request.POST.get('switch') == "product":
             types = request.POST.getlist('type');
             if not types or not types[0]:
@@ -126,7 +107,6 @@ def index(request):
                 'pdts': pdts,
                 'st': st 
                 }) 
-
     
         else: 
             months = request.POST.getlist('month')
@@ -218,8 +198,6 @@ def index(request):
                 'topPdt': l3,
                 'qtPdt': l4,
                 }) 
-
-        return redirect('/members')
 
   else:
         return render(request, 'first.html', {'count': 0, 'table': "" , 'formData': formData}) 
