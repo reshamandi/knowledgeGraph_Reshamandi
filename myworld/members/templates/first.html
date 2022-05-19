@@ -3,11 +3,13 @@
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" integrity="sha512-Lii3WMtgA0C0qmmkdCpsG0Gjr6M0ajRyQRQSbTF6BsrVh/nhZdHpVZ76iMIPvQwz1eoXC3DmAg9K51qT5/dEVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-    <link rel="stylesheet" href="../static/styles.css">
-    <script src="../static/scripts.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/styles.css">
+    <script src="../static/scripts.js"></script>
   </head>
 <body>
   <h1 class="resh">Reshamandi</h1>
@@ -112,8 +114,9 @@
   </p>
   
   <h2 style="margin-bottom: -20px;">Products :</h2>
-    <table class="transactions">
-      <thead>
+  <input id="search" type="text" placeholder="Search here">
+    <table class="transactions sortable">
+      <thead class="noselect">
         <tr>
           <th>Product</th>
           <th>Stock</th>
@@ -121,7 +124,7 @@
       </thead>
       <tbody>
         {% for tran in table1 %}
-        <tr>
+        <tr class="item">
           {% for key,value in tran.items %}
           <td>{{ key }}</td>
           <td>{{ value }}</td>
@@ -470,6 +473,7 @@ var config2 ={
     
   var myChart4=new Chart(canvaselement2,config2);
 }
+
 </script>
 
 </body>
