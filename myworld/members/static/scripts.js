@@ -1,10 +1,6 @@
-$(document).ready(function() {
-    $("#search").on("keyup", function() {
-        var value = $(this).val().toLowerCase();
-        $("tbody tr").filter(function() {
-            $(this).toggle($(this).text()
-            .toLowerCase().indexOf(value) > -1)
-        });
+$(document).ready(function () {
+    $('#example').DataTable({
+        pagingType: 'full_numbers',
     });
 });
 

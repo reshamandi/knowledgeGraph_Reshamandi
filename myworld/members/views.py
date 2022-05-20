@@ -159,7 +159,7 @@ def index(request):
           'types': ["Accessories", "Art-silk", "Bagru", "Banarasi", "Bhagalpuri", "Chanderi-cotton", "Cotton-linen", "Cotton-tant", "Cotton-voile"],
           'categories': ["AC Blanket(DOHAR)", "Beads", "Bedsheet", "Bermuda", "Bluse", "Chiffon", "Crochet Lace","Cutting Roll", "Fabric", "Fusing", "Girls-Womens Suit", "Shorts"],
           'borders': ["Checks", "Floral", "Golden-Zari", "Lines"],
-          'Colors': ["Blue", "Red", "Orange", "Violet", "Green", "Yellow", "Indigo"],
+          'colors': ["Blue", "Red", "Orange", "Violet", "Green", "Yellow", "Indigo"],
           'months': ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
           'centres': ["Bangalore", "Hyderabad", "Mumbai"],
           'ratings': ["1s", "2s", "3s", "4s", "5s"]
@@ -167,77 +167,77 @@ def index(request):
 
   if request.method == "POST":
         if request.POST.get('switch') == "product":
-            # types = request.POST.getlist('type');
-            # if not types or not types[0]:
-            #     types = formData['types']
+            types = request.POST.getlist('type');
+            if not types or not types[0]:
+                types = formData['types']
             
-            # categories = request.POST.getlist('category');
-            # if not categories or not categories[0]:
-            #     categories = formData['categories']
+            categories = request.POST.getlist('category');
+            if not categories or not categories[0]:
+                categories = formData['categories']
             
-            # colors = request.POST.getlist('color');
-            # if not colors or not colors[0]:
-            #     colors = formData['colors']
+            colors = request.POST.getlist('color');
+            if not colors or not colors[0]:
+                colors = formData['colors']
             
-            # borders = request.POST.getlist('border');
-            # if not borders or not borders[0]:
-            #     borders = formData['borders']
+            borders = request.POST.getlist('border');
+            if not borders or not borders[0]:
+                borders = formData['borders']
 
-            # data = products(types, categories, borders, colors)
-            # pdts =[]
-            # st = []
-            # for d in data[1]:
-            #     pdts.append(list(d.keys())[0])
-            #     st.append(int(list(d.values())[0]))
+            data = products(types, categories, borders, colors)
+            pdts =[]
+            st = []
+            for d in data[1]:
+                pdts.append(list(d.keys())[0])
+                st.append(int(list(d.values())[0]))
 
             # /////////////////////
-            monthss=['January','May','June', 'September', 'November', 'July']
-            centress=['Mumbai','Patna','Jaipur','Ranchi']
-            filter1='Color'
-            year=['2012','2011']
-            role='Weaver'
-            filter2='month'
-            head = ['Color', 'January','May','June', 'September', 'November', 'July']
-            data = newfun(role,filter1,filter2,centress,monthss,year)
-            Data = data[2]
-            body = []
-            for col in formData['Colors']:
-                            flag = 0
-                            L =[]
-                            L.append(col)
-                            Data = data[2]
-                            for j in Data:
-                                k = j[2]
-                                for h in k:
-                                    try:
-                                        if h[col]:
-                                            if flag==1:
-                                                L.append(h[col])
-                                                flag = 0
-                                            else:
-                                                flag = 1
-                                    except:
-                                        pass
-                            body.append(L)
+            # monthss=['January','May','June', 'September', 'November', 'July']
+            # centress=['Mumbai','Patna','Jaipur','Ranchi']
+            # filter1='Color'
+            # year=['2012','2011']
+            # role='Weaver'
+            # filter2='month'
+            # head = ['Color', 'January','May','June', 'September', 'November', 'July']
+            # data = newfun(role,filter1,filter2,centress,monthss,year)
+            # Data = data[2]
+            # body = []
+            # for col in formData['Colors']:
+            #                 flag = 0
+            #                 L =[]
+            #                 L.append(col)
+            #                 Data = data[2]
+            #                 for j in Data:
+            #                     k = j[2]
+            #                     for h in k:
+            #                         try:
+            #                             if h[col]:
+            #                                 if flag==1:
+            #                                     L.append(h[col])
+            #                                     flag = 0
+            #                                 else:
+            #                                     flag = 1
+            #                         except:
+            #                             pass
+            #                 body.append(L)
 
 
-            return render(request, 'first.html', {
-                'formData': formData,
-                'head': head,
-                'body': body
-            });
+            # return render(request, 'first.html', {
+            #     'formData': formData,
+            #     'head': head,
+            #     'body': body
+            # });
 
 
             # ////////////////////
 
-            # return render(request, 'first.html', {
-            #     'products': data[0], 
-            #     'table1': data[1] , 
-            #     'tot': data[2],
-            #     'formData': formData,
-            #     'pdts': pdts,
-            #     'st': st 
-            #     }) 
+            return render(request, 'first.html', {
+                'products': data[0], 
+                'table1': data[1] , 
+                'tot': data[2],
+                'formData': formData,
+                'pdts': pdts,
+                'st': st 
+                }) 
     
         else: 
             months = request.POST.getlist('month')
