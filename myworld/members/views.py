@@ -42,111 +42,89 @@ def transactions(months, centres, ratings, wids):
             for pdt in g[wid].keys():
                 for index in g[wid][pdt].keys():
                     transaction = g[wid][pdt][index].copy()
-                    if transaction['month'] in months and transaction['centre'] in centres and transaction['rating'] in ratings:
+                    # print(transaction)
+                    if transaction['w_month'] in months and transaction['w_centre'] in centres and transaction['w_rating'] in ratings:
                         transaction['pdt'] = pdt
                         data[1].append(transaction)
                         data[0] += 1
 
     else:
         for mon in months:
-            print(mon)
             for pdt in g[mon].keys():
                 for index in g[mon][pdt].keys():
                     transaction = g[mon][pdt][index].copy()
-                    if transaction['centre'] in centres and transaction['rating'] in ratings:
-                        transaction['pdt'] = pdt
-                        data[1].append(transaction)
-                        data[0] += 1
+                    try:
+                        if transaction['w_centre'] in centres and transaction['w_rating'] in ratings:
+                            transaction['pdt'] = pdt
+                            data[1].append(transaction)
+                            data[0] += 1
+                    except:
+                        pass
     return data
 
 # //////////////////////////////////////////////
-def newfun(role,filter,filter2,centre,month,year):
-    dict1={}
-    dict2={}
-    dict3={}
-    list1=[0,0,[]]
-    list2=[0,0,[]]
-    data=[0,0,[]]
-    if filter=='Type':
-        q=0
-    elif filter=='Category':
-        q=1
-    elif filter=='Border':
-        q=2
-    elif filter=='Color':
-        q=3
-
-    if filter2=='month':
-        var1='w_month'
-        var2='r_month'
-        var3=month
-        data[0]=1
-    elif filter2=='centre':
-        var1='w_centre'
-        var2='r_centre'
-        var3=centre
-        data[0]=0
-    elif filter2=='year':
-        var1='w_year'
-        var2='r_year'
-        var3=year
-        data[0]=2
-    
-    for elements in var3:
-        tup={elements : {}}
-        dict1.update(tup)
-    for elements in var3:
-        tup={elements : {}}
-        dict2.update(tup)
-    for elements in var3:
-        tup={elements : 0}
-        dict3.update(tup)
-    
-
-    
-    for item in month:
-        for item2 in g[item].keys():
-            for item3 in g[item][item2].keys():
-                if role=='Weaver':
-                    if g[item][item2][item3]['relation']=='SoldIn' and g[item][item2][item3]['w_centre'] in centre and g[item][item2][item3]['w_year'] in year:
-                        data[1]+=1
-                        temp=item2.split('*')
-                        dict3[g[item][item2][item3][var1]]+=1
-                        if temp[q] in dict1[g[item][item2][item3][var1]].keys():
-                            dict1[g[item][item2][item3][var1]][temp[q]]+=1
-                            dict2[g[item][item2][item3][var1]][temp[q]]+=int(g[item][item2][item3]['w_quantity'])
-                        else:
-                            temp3={temp[q] : 1}
-                            dict1[g[item][item2][item3][var1]].update(temp3)
-                            temp3={temp[q] : int(g[item][item2][item3]['w_quantity'])}
-                            dict2[g[item][item2][item3][var1]].update(temp3)
-                elif role=='Retailer':
-                    if g[item][item2][item3]['relation']=='BoughtIn' and g[item][item2][item3]['r_centre'] in centre and g[item][item2][item3]['r_year'] in year:
-                        data[1]+=1
-                        temp=item2.split('*')
-                        dict3[g[item][item2][item3][var2]]+=1
-                        if temp[q] in dict1[g[item][item2][item3][var2]].keys():
-                            dict1[g[item][item2][item3][var2]][temp[q]]+=1
-                            dict2[g[item][item2][item3][var2]][temp[q]]+=int(g[item][item2][item3]['r_quantity'])
-                        else:
-                            temp3={temp[q] : 1}
-                            dict1[g[item][item2][item3][var2]].update(temp3)
-                            temp3={temp[q] : int(g[item][item2][item3]['r_quantity'])}
-                            dict2[g[item][item2][item3][var2]].update(temp3)
-            
-               
-    for i in dict1.keys():
-        dict4=dict1[i].copy()
-        dict5=dict2[i].copy()
-        for j in dict5.keys():
-            list1[2].append({j:dict4[j]})
-            list1[2].append({j:dict5[j]})
-        list1[0]=i
-        list1[1]=dict3[i]
-        list2=list1.copy()
-        list2[2]=list1[2].copy()
-        list1[2].clear()
-        data[2].append(list2)       
+def stat(filter1, filter2, role, centres, months, years):
+    head = [filter1]
+    res = {}
+    filter = months
+    if role == 'Weaver':
+        rel = 'SoldIn'
+        qnty = 'w_quantity'
+        month = 'w_month'
+        year = 'w_year'
+        centre = 'w_centre'
+    else:
+        rel = 'BoughtIn'
+        qnty = 'r_quantity'
+        month = 'r_month'
+        year = 'r_year'
+        centre = 'r_centre'
+    if filter2 == 'Month':
+        filter = months
+        filter2 = month
+    elif filter2 == 'Centre':
+        filter = centres
+        filter2 = centre
+    elif filter2 == 'Year':
+        filter = years
+        filter2 = year
+    if filter1 == 'Color':
+        index = 3
+    elif filter1 == 'Border':
+        index = 2
+    elif filter1 == 'Category':
+        index = 1
+    else:
+        index = 0
+    for i in filter:
+        head.append(i)
+    data = [head]
+    for mon in months:
+        for pdt in g[mon].keys():
+            # print(g[mon][pdt],"\n\n")
+            for i in g[mon][pdt].keys():
+                tran = g[mon][pdt][i]
+                if tran['relation'] == rel and tran[year] in years and tran[centre] in centres:
+                    s = pdt.split('*')[index]
+                    try:
+                        res[s]
+                        try:
+                            res[s][tran[filter2]] += int(tran[qnty])
+                        except:
+                            res[s][tran[filter2]] = int(tran[qnty])
+                    except:
+                        res[s] = {tran[filter2]: int(tran[qnty])}
+    body = []
+    for i in res.keys():
+        l = []
+        l.append(i)
+        for j in filter:
+            try:
+                l.append(res[i][j])
+            except:
+                l.append(0)
+        body.append(l)
+    data.append(body)
     return data
 # //////////////////////////////////////////////
 
@@ -156,13 +134,16 @@ def index(request):
       load()
       loading += 1
   formData = {
-          'types': ["Accessories", "Art-silk", "Bagru", "Banarasi", "Bhagalpuri", "Chanderi-cotton", "Cotton-linen", "Cotton-tant", "Cotton-voile"],
-          'categories': ["AC Blanket(DOHAR)", "Beads", "Bedsheet", "Bermuda", "Bluse", "Chiffon", "Crochet Lace","Cutting Roll", "Fabric", "Fusing", "Girls-Womens Suit", "Shorts"],
-          'borders': ["Checks", "Floral", "Golden-Zari", "Lines"],
+          'types': ["Accessories", "Art silk", "Bagru", "Banarasi", "Bhagalpuri", "Chanderi cotton", "Cotton linen", "Cotton tant", "Cotton voile"],
+          'categories': ["AC Blanket(DOHAR)", "Beads", "Bedsheet", "Bermuda", "Bluse", "Chiffon", "Crochet Lace","Cutting Roll", "Fabric", "Fusing", "Girls Womens suit", "Shorts"],
+          'borders': ["Checks", "Floral", "Golden Zari", "Lines"],
           'colors': ["Blue", "Red", "Orange", "Violet", "Green", "Yellow", "Indigo"],
           'months': ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-          'centres': ["Bangalore", "Hyderabad", "Mumbai"],
-          'ratings': ["1s", "2s", "3s", "4s", "5s"]
+          'centres': ["Bangalore", "Hyderabad", "Mumbai", "Agra", "Delhi", "Chennai", "Kolkata", "Ahmedabad", "Patna", "Lucknow", "Jaipur", "Ranchi"],
+          'ratings': ["1", "2", "3", "4", "5"],
+          'pdtSpec': ["Type","Category","Border","Color"],
+          'filter': ["Month", "Centre", "Year"],
+          'years': ["2010", "2011", "2012", "2013", "2014"]
       }
 
   if request.method == "POST":
@@ -239,7 +220,7 @@ def index(request):
                 'st': st 
                 }) 
     
-        else: 
+        elif request.POST.get('switch') == "transaction": 
             months = request.POST.getlist('month')
             if not months or not months[0]:        
                 months = formData['months']
@@ -300,13 +281,13 @@ def index(request):
             else:
                 for tran in data[1]:
                     try:
-                        top_wid[int(tran['w_id'])] += int(tran['quantity'])
+                        top_wid[int(tran['w_id'])] += int(tran['w_quantity'])
                     except:
-                        top_wid[int(tran['w_id'])] = int(tran['quantity'])
+                        top_wid[int(tran['w_id'])] = int(tran['w_quantity'])
                     try:
-                        top_pdt[tran['pdt']] += int(tran['quantity'])
+                        top_pdt[tran['pdt']] += int(tran['w_quantity'])
                     except:
-                        top_pdt[tran['pdt']] = int(tran['quantity'])
+                        top_pdt[tran['pdt']] = int(tran['w_quantity'])
 
                 top_wid = {k: v for k, v in sorted(top_wid.items(), key=lambda item: item[1], reverse=True)}
                 top_pdt = {k: v for k, v in sorted(top_pdt.items(), key=lambda item: item[1], reverse=True)}
@@ -329,9 +310,34 @@ def index(request):
                 'topPdt': l3,
                 'qtPdt': l4,
                 }) 
+        else:
+            role = request.POST.get('role')
+            filter1 = request.POST.get('filter1')
+            if not filter1:        
+                filter1 = 'Type'
+
+            filter2 = request.POST.get('filter2')
+            if not filter2:        
+                filter2 = 'Month'
+
+            centres = request.POST.getlist('centres')
+            if not centres or not centres[0]:        
+                centres = formData['centres']
+
+            months = request.POST.getlist('months')
+            if not months or not months[0]:        
+                months = formData['months']
+
+            years = request.POST.getlist('years')
+            if not years or not years[0]:        
+                years = formData['years']
+
+            data = stat(filter1, filter2, role, centres, months, years)   
+            return render(request, 'first.html', {'formData': formData, 'headData': data[0], 'bodyData': data[1]})
+            
 
   else:
-        return render(request, 'first.html', {'count': 0, 'table': "" , 'formData': formData}) 
+        return render(request, 'first.html', {'formData': formData}) 
 
 
 

@@ -4,16 +4,10 @@ $(document).ready(function () {
     });
 });
 
-function tran(){
-    const x = document.getElementById('transSpec');
-    const y = document.getElementById('productSpec')
-    if(y.style.display === "block") y.style.display = "none";
-    if(x.style.display === "none") x.style.display = "block";
-}
-
-function pdt(){
-    const x = document.getElementById('productSpec')
-    const y = document.getElementById('transSpec');
-    if(y.style.display === "block") y.style.display = "none";
-    if(x.style.display === "none") x.style.display = "block";
+function toggle(ele){
+    const divs = document.querySelectorAll('.query');
+    for(let i = 0;i<divs.length;i++){
+        divs[i].style.display = "none";
+    }
+    ele.style.display = "block";
 }
