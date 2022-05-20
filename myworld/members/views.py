@@ -59,6 +59,97 @@ def transactions(months, centres, ratings, wids):
                         data[0] += 1
     return data
 
+# //////////////////////////////////////////////
+def newfun(role,filter,filter2,centre,month,year):
+    dict1={}
+    dict2={}
+    dict3={}
+    list1=[0,0,[]]
+    list2=[0,0,[]]
+    data=[0,0,[]]
+    if filter=='Type':
+        q=0
+    elif filter=='Category':
+        q=1
+    elif filter=='Border':
+        q=2
+    elif filter=='Color':
+        q=3
+
+    if filter2=='month':
+        var1='w_month'
+        var2='r_month'
+        var3=month
+        data[0]=1
+    elif filter2=='centre':
+        var1='w_centre'
+        var2='r_centre'
+        var3=centre
+        data[0]=0
+    elif filter2=='year':
+        var1='w_year'
+        var2='r_year'
+        var3=year
+        data[0]=2
+    
+    for elements in var3:
+        tup={elements : {}}
+        dict1.update(tup)
+    for elements in var3:
+        tup={elements : {}}
+        dict2.update(tup)
+    for elements in var3:
+        tup={elements : 0}
+        dict3.update(tup)
+    
+
+    
+    for item in month:
+        for item2 in g[item].keys():
+            for item3 in g[item][item2].keys():
+                if role=='Weaver':
+                    if g[item][item2][item3]['relation']=='SoldIn' and g[item][item2][item3]['w_centre'] in centre and g[item][item2][item3]['w_year'] in year:
+                        data[1]+=1
+                        temp=item2.split('*')
+                        dict3[g[item][item2][item3][var1]]+=1
+                        if temp[q] in dict1[g[item][item2][item3][var1]].keys():
+                            dict1[g[item][item2][item3][var1]][temp[q]]+=1
+                            dict2[g[item][item2][item3][var1]][temp[q]]+=int(g[item][item2][item3]['w_quantity'])
+                        else:
+                            temp3={temp[q] : 1}
+                            dict1[g[item][item2][item3][var1]].update(temp3)
+                            temp3={temp[q] : int(g[item][item2][item3]['w_quantity'])}
+                            dict2[g[item][item2][item3][var1]].update(temp3)
+                elif role=='Retailer':
+                    if g[item][item2][item3]['relation']=='BoughtIn' and g[item][item2][item3]['r_centre'] in centre and g[item][item2][item3]['r_year'] in year:
+                        data[1]+=1
+                        temp=item2.split('*')
+                        dict3[g[item][item2][item3][var2]]+=1
+                        if temp[q] in dict1[g[item][item2][item3][var2]].keys():
+                            dict1[g[item][item2][item3][var2]][temp[q]]+=1
+                            dict2[g[item][item2][item3][var2]][temp[q]]+=int(g[item][item2][item3]['r_quantity'])
+                        else:
+                            temp3={temp[q] : 1}
+                            dict1[g[item][item2][item3][var2]].update(temp3)
+                            temp3={temp[q] : int(g[item][item2][item3]['r_quantity'])}
+                            dict2[g[item][item2][item3][var2]].update(temp3)
+            
+               
+    for i in dict1.keys():
+        dict4=dict1[i].copy()
+        dict5=dict2[i].copy()
+        for j in dict5.keys():
+            list1[2].append({j:dict4[j]})
+            list1[2].append({j:dict5[j]})
+        list1[0]=i
+        list1[1]=dict3[i]
+        list2=list1.copy()
+        list2[2]=list1[2].copy()
+        list1[2].clear()
+        data[2].append(list2)       
+    return data
+# //////////////////////////////////////////////
+
 def index(request):
   global loading
   if loading == 0:
@@ -68,7 +159,7 @@ def index(request):
           'types': ["Accessories", "Art-silk", "Bagru", "Banarasi", "Bhagalpuri", "Chanderi-cotton", "Cotton-linen", "Cotton-tant", "Cotton-voile"],
           'categories': ["AC Blanket(DOHAR)", "Beads", "Bedsheet", "Bermuda", "Bluse", "Chiffon", "Crochet Lace","Cutting Roll", "Fabric", "Fusing", "Girls-Womens Suit", "Shorts"],
           'borders': ["Checks", "Floral", "Golden-Zari", "Lines"],
-          'colors': ["Blue", "Red", "Orange", "Violet", "Green", "Yellow", "Indigo"],
+          'Colors': ["Blue", "Red", "Orange", "Violet", "Green", "Yellow", "Indigo"],
           'months': ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
           'centres': ["Bangalore", "Hyderabad", "Mumbai"],
           'ratings': ["1s", "2s", "3s", "4s", "5s"]
@@ -76,37 +167,77 @@ def index(request):
 
   if request.method == "POST":
         if request.POST.get('switch') == "product":
-            types = request.POST.getlist('type');
-            if not types or not types[0]:
-                types = formData['types']
+            # types = request.POST.getlist('type');
+            # if not types or not types[0]:
+            #     types = formData['types']
             
-            categories = request.POST.getlist('category');
-            if not categories or not categories[0]:
-                categories = formData['categories']
+            # categories = request.POST.getlist('category');
+            # if not categories or not categories[0]:
+            #     categories = formData['categories']
             
-            colors = request.POST.getlist('color');
-            if not colors or not colors[0]:
-                colors = formData['colors']
+            # colors = request.POST.getlist('color');
+            # if not colors or not colors[0]:
+            #     colors = formData['colors']
             
-            borders = request.POST.getlist('border');
-            if not borders or not borders[0]:
-                borders = formData['borders']
+            # borders = request.POST.getlist('border');
+            # if not borders or not borders[0]:
+            #     borders = formData['borders']
 
-            data = products(types, categories, borders, colors)
-            pdts =[]
-            st = []
-            for d in data[1]:
-                pdts.append(list(d.keys())[0])
-                st.append(int(list(d.values())[0]))
+            # data = products(types, categories, borders, colors)
+            # pdts =[]
+            # st = []
+            # for d in data[1]:
+            #     pdts.append(list(d.keys())[0])
+            #     st.append(int(list(d.values())[0]))
+
+            # /////////////////////
+            monthss=['January','May','June', 'September', 'November', 'July']
+            centress=['Mumbai','Patna','Jaipur','Ranchi']
+            filter1='Color'
+            year=['2012','2011']
+            role='Weaver'
+            filter2='month'
+            head = ['Color', 'January','May','June', 'September', 'November', 'July']
+            data = newfun(role,filter1,filter2,centress,monthss,year)
+            Data = data[2]
+            body = []
+            for col in formData['Colors']:
+                            flag = 0
+                            L =[]
+                            L.append(col)
+                            Data = data[2]
+                            for j in Data:
+                                k = j[2]
+                                for h in k:
+                                    try:
+                                        if h[col]:
+                                            if flag==1:
+                                                L.append(h[col])
+                                                flag = 0
+                                            else:
+                                                flag = 1
+                                    except:
+                                        pass
+                            body.append(L)
+
 
             return render(request, 'first.html', {
-                'products': data[0], 
-                'table1': data[1] , 
-                'tot': data[2],
                 'formData': formData,
-                'pdts': pdts,
-                'st': st 
-                }) 
+                'head': head,
+                'body': body
+            });
+
+
+            # ////////////////////
+
+            # return render(request, 'first.html', {
+            #     'products': data[0], 
+            #     'table1': data[1] , 
+            #     'tot': data[2],
+            #     'formData': formData,
+            #     'pdts': pdts,
+            #     'st': st 
+            #     }) 
     
         else: 
             months = request.POST.getlist('month')

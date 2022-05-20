@@ -104,6 +104,31 @@
   <centre><canvas id="myChart" width="50" height="10" ></canvas></centre> 
   {% endif %}
 
+  {% if head %}
+  <table>
+    <thead>
+      <tr>
+        {% for i in head %}
+          <td>{{i}}</td>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in body %}
+      <tr>
+        {% for j in i %}
+          <td>{{j}}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    
+    <!-- {% for row in data %}
+      {{row}} <br>
+    {% endfor %} -->
+  {% endif %}
+
   {% if products %}
   <p>
     <br>
