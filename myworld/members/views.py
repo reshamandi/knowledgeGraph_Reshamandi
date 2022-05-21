@@ -158,7 +158,8 @@ def stat(filter1, filter2, role, centres, months, years):
                         except:
                             res[s][tran[filter2]] = int(tran[qnty])
                     except:
-                        res[s] = {tran[filter2]: int(tran[qnty])}
+                        if not s == 'Asilkrt ':
+                            res[s] = {tran[filter2]: int(tran[qnty])}
     body = []
     for i in res.keys():
         l = []
@@ -258,31 +259,31 @@ def index(request):
                     chart = [0,0,0,0,0,0,0,0,0,0,0,0]
                     for tran in data[1]:
                         if(tran['w_id'] == wid):
-                            m = tran['month']
+                            m = tran['w_month']
                             if m == "January":
-                                chart[0] += int(tran['quantity'])
+                                chart[0] += int(tran['w_quantity'])
                             elif m == "February":
-                                chart[1] += int(tran['quantity'])
+                                chart[1] += int(tran['w_quantity'])
                             elif m == "March":
-                                chart[2] += int(tran['quantity'])
+                                chart[2] += int(tran['w_quantity'])
                             elif m == "April":
-                                chart[3] += int(tran['quantity'])
+                                chart[3] += int(tran['w_quantity'])
                             elif m == "May":
-                                chart[4] += int(tran['quantity'])
+                                chart[4] += int(tran['w_quantity'])
                             elif m == "June":
-                                chart[5] += int(tran['quantity'])
+                                chart[5] += int(tran['w_quantity'])
                             elif m == "July":
-                                chart[6] += int(tran['quantity'])
+                                chart[6] += int(tran['w_quantity'])
                             elif m == "August":
-                                chart[7] += int(tran['quantity'])
+                                chart[7] += int(tran['w_quantity'])
                             elif m == "September":
-                                chart[8] += int(tran['quantity'])
+                                chart[8] += int(tran['w_quantity'])
                             elif m == "October":
-                                chart[9] += int(tran['quantity'])
+                                chart[9] += int(tran['w_quantity'])
                             elif m == "November":
-                                chart[10] += int(tran['quantity'])
+                                chart[10] += int(tran['w_quantity'])
                             elif m == "December":
-                                chart[11] += int(tran['quantity'])
+                                chart[11] += int(tran['w_quantity'])
                     chartMonth.append(chart);                
             else:
                 for tran in data[1]:

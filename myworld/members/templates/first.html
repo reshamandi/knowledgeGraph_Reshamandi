@@ -15,12 +15,14 @@
 <body>
   <h1 class="resh">Reshamandi</h1>
   <hr class="line">
+  <div id="image">
   <!-- <div class="line"></div> -->
   <button onclick="toggle(transSpec)" class="butn">Transactions</button>
   <button onclick="toggle(statSpec)" class="butn">Statistics</button>
   <button onclick="toggle(productSpec)" class="butn">Products</button>
 
 <div ng-app="myApp" ng-controller="formCtrl">
+
   <div id="statSpec" style="display: none;" class="query">
     <form novalidate action="" method="POST"> 
       {% csrf_token %}
@@ -71,14 +73,13 @@
   
       <input type="hidden" name="switch" value="stat">
       <input type="submit" value="Search" class="btn2">
-      <button ng-click="reset()" class="btn2">Reset</button>
         </form>
   </div>
 
   <div id="productSpec" style="display: none;" class="query">
     <form novalidate action="" method="POST"> 
       {% csrf_token %}
-     <h1 style="margin-bottom: -20px;">Product Specifications</h1>  <br>
+     <h1 style="margin-bottom: -20px;">Product Details</h1>  <br>
   
       <h4>Type</h4>
       <select ng-model="product.type" name="type" multiple size="3">
@@ -121,7 +122,6 @@
 
         <input type="hidden" name="switch" value="product">
         <input type="submit" value="Search" class="btn2">
-      <button ng-click="reset()" class="btn2">Reset</button>
         </form>
   </div>
 
@@ -158,62 +158,78 @@
         <input class="input" type="text" ng-model="user.weaver_id" name="wids" />
         <input type="hidden" name="switch" value="transaction"><br>
         <input type="submit" value="Search" class="btn2">
-      <button ng-click="reset()" class="btn2">Reset</button>
       </form>
     </div>
 
   <br>
-
-  {% if headData %}
-  <table id="example" class="display" style="width:100%">
-    <thead>
+</div>
+  <div class="tableLayout">
+    {% if headData %}
+    <table id="example" class="display" style="width:100%">
+      <thead>
+          <tr>
+            {% for i in headData %}
+            <th>{{i}}</th>
+            {% endfor %}
+          </tr>
+      </thead>
+      <tbody>
+        {% for i in bodyData %}
         <tr>
-          {% for i in headData %}
-          <th>{{i}}</th>
+          {% for j in i %}
+            <td>{{j}}</td>
           {% endfor %}
         </tr>
-    </thead>
-    <tbody>
-      {% for i in bodyData %}
-      <tr>
-        {% for j in i %}
-          <td>{{j}}</td>
-        {% endfor %}
-      </tr>
-      {% endfor %} 
-    </tbody>
-  </table>
-  {% endif %}
+        {% endfor %} 
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
+
 
 
   {% if wids %}
   <centre><canvas id="myChart" width="50" height="10" ></canvas></centre> 
   {% endif %}
 
+  
   {% if table %}
   <p> Number of transactions is : {{ count }}</p>
     <h2>Transactions :</h2>
-    <table class="transactions">
-      <thead>
-        <tr>
-          <th>Weaver_id</th>
-          <th>Quantity</th>
-          <th>Month</th>
-          <th>Centre</th>
-          <th>Rating</th>
-          <th>Product</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for tran in table %}
-        <tr>
-          {% for key,value in tran.items %}
-          <td>{{ value }}</td>
+    <div class="tableLayout">
+      <table id="example" class="display" style="width:100%">
+        <thead>
+          <tr>
+            <th>Weaver</th>
+            <th>Quantity</th>
+            <!-- <th>Relation</th> -->
+            <th>Centre</th>
+            <th>Region</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>Cost</th>
+            <th>Rating</th>
+            <th>Product</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tran in table %}
+          <tr>
+            <td>{{tran.w_id}}</td>
+            <td>{{tran.w_quantity}}</td>
+            <td>{{tran.w_centre}}</td>
+            <td>{{tran.w_region}}</td>
+            <td>{{tran.w_month}}</td>
+            <td>{{tran.w_year}}</td>
+            <td>{{tran.w_cost}}</td>
+            <td>{{tran.w_rating}}</td>
+            <td>{{tran.pdt}}</td>
+          </tr>
           {% endfor %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
+    
   {% endif %}
 
   {% if top.wids %}
@@ -332,7 +348,7 @@ const plugin = {
     const ctx = chart.canvas.getContext('2d');
     ctx.save();
     ctx.globalCompositeOperation = 'destination-over';
-    ctx.fillStyle = 'lightBlack';
+    ctx.fillStyle = '#eff9d9';
     ctx.fillRect(0, 0, chart.width, chart.height);
     ctx.restore();
   }
