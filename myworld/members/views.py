@@ -15,25 +15,70 @@ def load():
     path = os.path.dirname(os.path.realpath(__file__)) + "/Graph1.txt"
     g = pickle.load(open(path,'rb'))
 
-def products(types,categories,borders,colors):
-    global g
-    data=[0,[],0]
-    for type in types:
-        for product in g[type].keys():
-            names=product.split('*')
-            for item4 in categories:
-                if names[1]==item4:
-                    for item5 in borders:
-                        if names[2]==item5:
-                            for item6 in colors:
-                                if names[3]==item6:
-                                    temp={product : g.nodes[product]['Stock']}
-                                    data[0]+=1
-                                    data[1].append(temp)
-                                    data[2]+= g.nodes[product]['Stock']
-
-    return data
-
+def product(filter,type,category,border,color):
+    dict1={}
+    row=[]
+    row2=[]
+    table=[]
+    table2=[]
+    prod=[]
+    for i in type:
+        for j in g[i].keys():
+            var1=j.split('*')
+            if var1[1] in category and var1[2] in border and var1[3] in color:
+                for item in g[j].keys():
+                    if item.isnumeric():
+                        for item2 in g[j][item].keys():
+                            if g[j][item][item2]['relation']=='SoldBy':
+                                if g[j][item][item2]['w_centre'] not in dict1.keys():
+                                    tup2={g[j][item][item2]['w_centre'] : {}}
+                                    dict1.update(tup2)
+                                if j not in prod:
+                                    prod.append(j)
+                                if j in dict1[g[j][item][item2]['w_centre']].keys():
+                                    dict1[g[j][item][item2]['w_centre']][j]+=int(g[j][item][item2]['w_quantity'])
+                                else:
+                                    temp3={j : int(g[j][item][item2]['w_quantity'])}
+                                    dict1[g[j][item][item2]['w_centre']].update(temp3)
+                            elif g[j][item][item2]['relation']=='BoughtBy':
+                                if g[j][item][item2]['r_centre'] not in dict1.keys():
+                                    tup2={g[j][item][item2]['r_centre'] : {}}
+                                    dict1.update(tup2)
+                                if j not in prod:
+                                    prod.append(j)
+                                if j in dict1[g[j][item][item2]['r_centre']].keys():
+                                    dict1[g[j][item][item2]['r_centre']][j]-=int(g[j][item][item2]['r_quantity'])
+                                else:
+                                    temp3={j : -int(g[j][item][item2]['r_quantity'])}
+                                    dict1[g[item][item2]['r_centre']].update(temp3)
+    head=['Type','Category','Border','Color']
+    for items in dict1.keys():
+        head.append(items)
+    table.append(head)
+    for i in range(len(prod)):
+        tup={prod[i] : int(g.nodes[prod[i]]['Stock'])}
+        table2.append(tup)
+        var=prod[i].split('*')
+        for j in range(4):
+            row.append(var[j])
+        for item2 in dict1.keys():
+            if prod[i] in dict1[item2].keys():
+                row.append(abs(dict1[item2][prod[i]]))
+            else:
+                row.append(0)
+        row2=row.copy()
+        table.append(row2)
+        row.clear()
+    if filter=='split':
+        return table
+    else:
+        data = [["Type", "Category", "Border", "Color", "Stock"]]
+        for i in table2:
+            j = list(i.keys())[0].split("*")
+            j.append(list(i.values())[0])
+            data.append(j)
+        return data
+                            
 def transactions(months, centres, ratings, wids):
     global g
     data = [0, []]
@@ -148,6 +193,8 @@ def index(request):
 
   if request.method == "POST":
         if request.POST.get('switch') == "product":
+            filter = request.POST.get('filter')
+
             types = request.POST.getlist('type');
             if not types or not types[0]:
                 types = formData['types']
@@ -163,58 +210,17 @@ def index(request):
             borders = request.POST.getlist('border');
             if not borders or not borders[0]:
                 borders = formData['borders']
-
-            data = products(types, categories, borders, colors)
+            data =  product(filter,types,categories,borders,colors)
             pdts =[]
             st = []
-            for d in data[1]:
-                pdts.append(list(d.keys())[0])
-                st.append(int(list(d.values())[0]))
-
-            # /////////////////////
-            # monthss=['January','May','June', 'September', 'November', 'July']
-            # centress=['Mumbai','Patna','Jaipur','Ranchi']
-            # filter1='Color'
-            # year=['2012','2011']
-            # role='Weaver'
-            # filter2='month'
-            # head = ['Color', 'January','May','June', 'September', 'November', 'July']
-            # data = newfun(role,filter1,filter2,centress,monthss,year)
-            # Data = data[2]
-            # body = []
-            # for col in formData['Colors']:
-            #                 flag = 0
-            #                 L =[]
-            #                 L.append(col)
-            #                 Data = data[2]
-            #                 for j in Data:
-            #                     k = j[2]
-            #                     for h in k:
-            #                         try:
-            #                             if h[col]:
-            #                                 if flag==1:
-            #                                     L.append(h[col])
-            #                                     flag = 0
-            #                                 else:
-            #                                     flag = 1
-            #                         except:
-            #                             pass
-            #                 body.append(L)
-
-
-            # return render(request, 'first.html', {
-            #     'formData': formData,
-            #     'head': head,
-            #     'body': body
-            # });
-
-
-            # ////////////////////
-
+            if not filter == 'split':
+                for i in data[1:]:
+                    s = i[0] + "*" + i[1] + "*" + i[2] + "*" + i[3]
+                    pdts.append(s)
+                    st.append(int(i[4]))
             return render(request, 'first.html', {
-                'products': data[0], 
-                'table1': data[1] , 
-                'tot': data[2],
+                'headData': data[0], 
+                'bodyData': data[1:] , 
                 'formData': formData,
                 'pdts': pdts,
                 'st': st 

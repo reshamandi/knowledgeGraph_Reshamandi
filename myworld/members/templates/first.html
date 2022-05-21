@@ -111,6 +111,14 @@
           <option value="{{ i }}">{{ i }}</option>
           {% endfor %}
         </select>
+
+        <h4>Filter</h4>
+     <input type="radio" id="w" name="filter" value="split" checked>
+    <label for="w">Split</label><br>
+    <input type="radio" id="r" name="filter" value="t">
+    <label for="r">Total</label><br>
+
+
         <input type="hidden" name="switch" value="product">
         <input type="submit" value="Search" class="btn2">
       <button ng-click="reset()" class="btn2">Reset</button>
@@ -180,61 +188,6 @@
 
   {% if wids %}
   <centre><canvas id="myChart" width="50" height="10" ></canvas></centre> 
-  {% endif %}
-
-  {% if head %}
-  <table>
-    <thead>
-      <tr>
-        {% for i in head %}
-          <td>{{i}}</td>
-        {% endfor %}
-      </tr>
-    </thead>
-    <tbody>
-      {% for i in body %}
-      <tr>
-        {% for j in i %}
-          <td>{{j}}</td>
-        {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-    
-    <!-- {% for row in data %}
-      {{row}} <br>
-    {% endfor %} -->
-  {% endif %}
-
-  {% if products %}
-  <p>
-    <br>
-    {{ products }} distinct products match the required specification
-    <br>
-    Their total stock: {{tot}}
-    <br>
-  </p>
-  
-  <h2 style="margin-bottom: -20px;">Products :</h2>
-    <table class="transactions sortable display"  style="width:fit-content">
-      <thead class="noselect">
-        <tr>
-          <th>Product</th>
-          <th>Stock</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for tran in table1 %}
-        <tr>
-          {% for key,value in tran.items %}
-          <td>{{ key }}</td>
-          <td>{{ value }}</td>
-          {% endfor %}
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
   {% endif %}
 
   {% if table %}
