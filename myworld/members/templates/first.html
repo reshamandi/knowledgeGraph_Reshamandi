@@ -11,10 +11,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../static/styles.css">
     <script src="../static/scripts.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
 <body>
+  <!-- Navbar -->
+  <div class="w3-top" style="background-color: white;">
+    <div class="w3-bar w3-left-align w3-large" style="padding-top:5px;color: #9acd30;"><div id="navbar">
+      <a href="https://www.facebook.com/fbreshamandi"><i class="fa fa-facebook w3-hover-opacity" style="text-indent: 7.5em;">&emsp;</i></a>
+      <a href="https://www.instagram.com/resha_mandi/"><i class="fa fa-instagram w3-hover-opacity">&emsp;</i></a> 
+      <a href="https://www.linkedin.com/company/inreshamandi?original_referer=https%3A%2F%2Freshamandi.com%2F"><i class="fa fa-linkedin w3-hover-opacity">&emsp;</i></a>
+      <a href="https://twitter.com/reshamandi"><i class="fa fa-twitter w3-hover-opacity"></i></a>
+      <a href="tel:+917338694594" style="text-indent: 47em;font-size: 15px;text-decoration: none;">&ensp;<i class="fa fa-phone"></i>+91 7338694594</a>
+      <a href="mailto:support@reshamandi.com?subject=Support information need" style="text-indent: 0.5em;font-size: 15px;text-decoration: none;">&ensp;<i class="fa fa-envelope">&ensp;</i>support@reshamandi.com</a>
+      <br><hr style=" margin: 0.3em auto;">
+      <script>
+        var prevScrollpos = window.pageYOffset;
+        window.onscroll = function() {
+        var currentScrollPos = window.pageYOffset;
+          if (prevScrollpos > currentScrollPos) {
+            document.getElementById("navbar").style.top = "0";
+          } else {
+            document.getElementById("navbar").style.top = "-50px";
+          }
+          prevScrollpos = currentScrollPos;
+        }
+        </script>
+    </div>
+    <a href="https://reshamandi.com/" style="text-decoration:none;padding-left: 7.5em;"><img src="../static/media/logo.png" width="95" height="95" ></a>
+  </div><hr style=" margin: 0.3em auto;">
+ </div>
+<br><br><br><br><br><br>
   <h1 class="resh">Reshamandi</h1>
-  <hr class="line">
   <div id="image">
   <!-- <div class="line"></div> -->
   <button onclick="toggle(transSpec)" class="butn">Transactions</button>
