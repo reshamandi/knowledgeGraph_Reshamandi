@@ -189,7 +189,11 @@ def index(request):
           'ratings': ["1", "2", "3", "4", "5"],
           'pdtSpec': ["Type","Category","Border","Color"],
           'filter': ["Month", "Centre", "Year"],
-          'years': ["2010", "2011", "2012", "2013", "2014"]
+          'regions': ["North", "South", "East", "West"],
+          'seasons': ["Spring", "Summer", "Monsoon", "Winter"],
+          'years': ["2010", "2011", "2012", "2013", "2014"],
+          'north': ["Agra", "Delhi", "Lucknow"], 'south': ["Hyderabad", "Chennai", "Bangalore"], 'east': ["Kolkata", "Ranchi", "Patna"], 'west': ["Jaipur", "Ahmedabad", "Mumbai"],
+          'summer': ["May", "June"], 'winter': [ "November", "December", "January", "February"], 'monsoon': ["July", "August", "September", "October"], 'spring': ["March", "April"]
       }
 
   if request.method == "POST":
@@ -235,6 +239,36 @@ def index(request):
             centres = request.POST.getlist('centre')
             if not centres or not centres[0]:
                 centres = formData['centres']
+            
+            regions = request.POST.getlist('regions')
+            if regions and not regions[0] == '':        
+                centres = []
+                for i in regions:
+                    if i == 'North':
+                        i = formData['north']
+                    elif i == 'South':
+                        i = formData['south']
+                    elif i == 'East':
+                        i = formData['east']
+                    else:
+                        i = formData['west']
+                    for j in i:
+                        centres.append(j)
+            
+            seasons = request.POST.getlist('seasons')
+            if seasons and not seasons[0] == '':        
+                months = []
+                for i in seasons:
+                    if i == 'Summer':
+                        i = formData['summer']
+                    elif i == 'Spring':
+                        i = formData['spring']
+                    elif i == 'Monsoon':
+                        i = formData['monsoon']
+                    else:
+                        i = formData['winter']
+                    for j in i:
+                        months.append(j)
 
             ratings = request.POST.getlist('rating')
             if not ratings or not ratings[0]:
@@ -339,6 +373,36 @@ def index(request):
             if not years or not years[0]:        
                 years = formData['years']
 
+            regions = request.POST.getlist('regions')
+            if regions and not regions[0]=='': 
+                centres = []
+                for i in regions:
+                    if i == 'North':
+                        i = formData['north']
+                    elif i == 'South':
+                        i = formData['south']
+                    elif i == 'East':
+                        i = formData['east']
+                    else:
+                        i = formData['west']
+                    for j in i:
+                        centres.append(j)
+            
+            seasons = request.POST.getlist('seasons')
+            if seasons and not seasons[0]=='':        
+                months = []
+                for i in seasons:
+                    if i == 'Summer':
+                        i = formData['summer']
+                    elif i == 'Spring':
+                        i = formData['spring']
+                    elif i == 'Monsoon':
+                        i = formData['monsoon']
+                    else:
+                        i = formData['winter']
+                    for j in i:
+                        months.append(j)
+            
             data = stat(filter1, filter2, role, centres, months, years)   
             return render(request, 'first.html', {'formData': formData, 'headData': data[0], 'bodyData': data[1]})
             

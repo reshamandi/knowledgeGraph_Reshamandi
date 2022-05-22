@@ -47,7 +47,15 @@
           {% endfor %}
         </select>
 
-      <h4>Centres</h4>
+      <h4>Region</h4>
+      <select ng-model="stat.regions" name="regions" multiple size="3">
+        <option value="">All
+        {% for i in formData.regions %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+
+      <h4>Centre</h4>
       <select ng-model="stat.centres" name="centres" multiple size="3">
         <option value="">All
         {% for i in formData.centres %}
@@ -55,7 +63,15 @@
         {% endfor %}
       </select>
 
-      <h4>Months</h4>
+      <h4>Season</h4>
+      <select ng-model="stat.seasons" name="seasons" multiple size="3">
+        <option value="">All
+        {% for i in formData.seasons %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+
+      <h4>Month</h4>
       <select ng-model="stat.months" name="months" multiple size="3">
         <option value="">All
         {% for i in formData.months %}
@@ -63,7 +79,7 @@
         {% endfor %}
       </select>
 
-      <h4>Years</h4>
+      <h4>Year</h4>
       <select ng-model="stat.years" name="years" multiple size="3">
         <option value="">All
         {% for i in formData.years %}
@@ -130,13 +146,29 @@
       {% csrf_token %}
       <h1>Transaction Details</h1>
 
-      <h4>Month of Transaction</h4>
+      <h4>Season</h4>
+      <select ng-model="stat.seasons" name="seasons" multiple size="3">
+        <option value="">All
+        {% for i in formData.seasons %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
+
+      <h4>Month</h4>
       <select ng-model="user.month" name="month" multiple size="3">
         <option value="">All
           {% for i in formData.months %}
           <option value="{{ i }}">{{ i }}</option>
           {% endfor %}
       </select> 
+    
+      <h4>Region</h4>
+      <select ng-model="stat.regions" name="regions" multiple size="3">
+        <option value="">All
+        {% for i in formData.regions %}
+        <option value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+      </select>
 
       <h4>Centre</h4>
       <select ng-model="user.center" name="centre" multiple size="3">
