@@ -404,7 +404,8 @@ def index(request):
                         months.append(j)
             
             data = stat(filter1, filter2, role, centres, months, years)   
-            return render(request, 'first.html', {'formData': formData, 'headData': data[0], 'bodyData': data[1]})
+            return render(request, 'first.html', {'dummy': 5,
+'formData': formData, 'headData': data[0], 'bodyData': data[1]})
             
 
   else:
